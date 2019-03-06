@@ -1,0 +1,145 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/lin"/>
+
+    <LinearLayout
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        android:background="@color/white_theme"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/lin_tab_home"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_home"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/ic_home1" />
+
+            <TextView
+                android:id="@+id/tv_tab_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="首页"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_tab_emoticons"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_emoticons"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/ic_emoticon1" />
+
+            <TextView
+                android:id="@+id/tv_tab_emoticons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="表情"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_tab_menu"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:onClick="onViewClicked"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ic_tab_menu"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:src="@drawable/ic_tab_more" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_tab_find"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_find"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/ic_find1" />
+
+            <TextView
+                android:id="@+id/tv_tab_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发现"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_tab_person"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_tab_person"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/ic_person1" />
+
+            <TextView
+                android:id="@+id/tv_tab_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
