@@ -1,4 +1,4 @@
-package com.study.emoticons.adapter;
+package com.study.emoticons.view.adapter;
 
 import android.content.Context;
 import android.os.Build;

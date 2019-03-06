@@ -1,4 +1,4 @@
-package com.study.emoticons.fragment;
+package com.study.emoticons.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.study.emoticons.R;
-import com.study.emoticons.adapter.ImageAdapter_second;
+import com.study.emoticons.view.adapter.ImageAdapter_second;
 import com.study.emoticons.base.BaseFragment;
 import com.study.emoticons.bmob.Operation;
 import com.study.emoticons.greendao.dao.ImageDao;

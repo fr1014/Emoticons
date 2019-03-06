@@ -4,7 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.study.emoticons.fragment.EmoticonsFragment">
+    tools:context=".view.fragment.EmoticonsFragment">
 
     <include
         android:id="@+id/bar"

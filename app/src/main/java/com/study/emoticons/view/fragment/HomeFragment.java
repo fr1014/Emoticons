@@ -1,11 +1,11 @@
-package com.study.emoticons.fragment;
+package com.study.emoticons.view.fragment;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 import com.study.emoticons.R;
-import com.study.emoticons.adapter.ImageAdapter_first;
+import com.study.emoticons.view.adapter.ImageAdapter_first;
 import com.study.emoticons.base.BaseFragment;
 
 import butterknife.BindView;

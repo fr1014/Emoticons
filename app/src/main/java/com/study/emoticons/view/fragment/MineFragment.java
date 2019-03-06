@@ -1,4 +1,4 @@
-package com.study.emoticons.fragment;
+package com.study.emoticons.view.fragment;
 
 
 import android.content.Context;
@@ -19,6 +19,7 @@ import com.study.emoticons.greendao.dao.ConfiguesDao;
 import com.study.emoticons.model.Configues;
 import com.study.emoticons.utils.ListUtil;
 import com.study.emoticons.utils.ToastUtils;
+import com.study.emoticons.view.activity.MainActivity;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -47,7 +48,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.iv_logout)
     ImageView logout;
 
-    private Tencent mTencent;
     private UserInfo mUserInfo;
     private String user_name;
     private String user_head_img;
@@ -89,7 +89,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     protected void daoBusiness() {
         configuesDao = daoSession.getConfiguesDao();
         configuesList = getConfiguesList();
-        mTencent = Tencent.createInstance(Constans.APP_ID, MyApplication.appContext);
+
         logout.setOnClickListener(this);
         if (configues != null && configues.getStatus_online()) {
             login.setVisibility(View.GONE);
@@ -105,13 +105,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.login:
                 //all表示获取所有权限
-                mTencent.login(MineFragment.this, "all", new BaseUiListener());
+                MainActivity.mTencent.login(MineFragment.this, "all", new BaseUiListener());
                 break;
             case R.id.iv_logout:
                 login.setVisibility(View.VISIBLE);
                 iv_Head.setVisibility(View.GONE);
                 name.setVisibility(View.GONE);
-                mTencent.logout(MyApplication.appContext);
+                MainActivity.mTencent.logout(MyApplication.appContext);
                 Configues newConfigues = configues;
                 newConfigues.setStatus_online(false);
                 WriteToGreenDao(newConfigues);
@@ -171,15 +171,15 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 String openID = obj.getString("openid");
                 String accessToken = obj.getString("access_token");
                 String expires = obj.getString("expires_in");
-                mTencent.setOpenId(openID);
-                mTencent.setAccessToken(accessToken, expires);
+                MainActivity.mTencent.setOpenId(openID);
+                MainActivity.mTencent.setAccessToken(accessToken, expires);
 
                 //保存当前用户的openid做为标识
                 SharedPreferences.Editor editor = getActivity().getSharedPreferences("login_user", Context.MODE_PRIVATE).edit();
                 editor.putString("openId", openID);
                 editor.apply();
 
-                QQToken qqToken = mTencent.getQQToken();
+                QQToken qqToken = MainActivity.mTencent.getQQToken();
                 mUserInfo = new UserInfo(MyApplication.appContext, qqToken);
                 mUserInfo.getUserInfo(new IUiListener() {
                     @Override

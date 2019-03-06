@@ -1,4 +1,4 @@
-package com.study.emoticons.fragment;
+package com.study.emoticons.view.fragment;
 
 import android.os.Bundle;
 import android.widget.TextView;
