@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.study.emoticons.bmob.bean.PersonEmoticon;
-import com.study.emoticons.fragment.EmoticonsFragment;
+import com.study.emoticons.view.fragment.EmoticonsFragment;
 import com.study.emoticons.model.Image;
 
 import java.io.File;
@@ -27,7 +27,6 @@ import cn.bmob.v3.listener.UploadBatchListener;
 
 public class Operation {
 
-    private static final String TAG = "Operation";
     /**
      * 新增多条数据
      */
@@ -155,7 +154,6 @@ public class Operation {
                 if (e==null){
                     image.setPath(path);
                     emoticonsFragment.updateImage(image);
-                    Log.d(TAG, "fanrui"+image.getPath());
                 }
             }
 
