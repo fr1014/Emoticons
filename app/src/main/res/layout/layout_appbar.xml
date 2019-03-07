@@ -35,6 +35,19 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
+                android:id="@+id/refresh"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/refresh"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/select"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/select" />
+
+            <ImageView
                 android:id="@+id/select"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -44,10 +57,23 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/text_toolbar"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.974"
+                app:layout_constraintHorizontal_bias="0.738"
                 app:layout_constraintStart_toEndOf="@+id/text_toolbar"
                 app:layout_constraintTop_toTopOf="@+id/text_toolbar"
-                app:layout_constraintVertical_bias="0.692" />
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/delet"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/delet"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/refresh"
+                app:layout_constraintEnd_toStartOf="@+id/refresh"
+                app:layout_constraintHorizontal_bias="0.537"
+                app:layout_constraintStart_toEndOf="@+id/select" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.Toolbar>

@@ -7,11 +7,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.study.emoticons.bmob.bean.PersonEmoticon;
-import com.study.emoticons.utils.ListUtil;
+import com.study.emoticons.model.Image_cloud;
 import com.study.emoticons.utils.ToastUtils;
 import com.study.emoticons.view.activity.MainActivity;
 import com.study.emoticons.view.fragment.EmoticonsFragment;
-import com.study.emoticons.model.Image;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BatchResult;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.DeleteBatchListener;
 import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListListener;
@@ -31,7 +31,6 @@ import cn.bmob.v3.listener.UploadBatchListener;
 
 public class Operation {
 
-    private static final String TAG = "Operation";
     /**
      * 新增多条数据
      */
@@ -60,6 +59,57 @@ public class Operation {
                 } else {
                     Snackbar.make(view, "失败：" + e.getMessage() + "," + e.getErrorCode(), Snackbar.LENGTH_LONG).show();
                 }
+
+
+            }
+        });
+    }
+
+    /**
+     * 批量删除数据
+     *
+     * @param imageList
+     */
+    public static void delet(View view, List<Image_cloud> imageList) {
+        List<BmobObject> personEmoticons = new ArrayList<>();
+
+        for (int i = 0; i < imageList.size(); i++) {
+            PersonEmoticon personEmoticon = new PersonEmoticon();
+            personEmoticon.setObject(imageList.get(i).getObjectId());
+            personEmoticons.add(personEmoticon);
+        }
+
+        new BmobBatch().deleteBatch(personEmoticons).doBatch(new QueryListListener<BatchResult>() {
+            @Override
+            public void done(List<BatchResult> list, BmobException e) {
+                deletFiles(view, imageList);
+            }
+        });
+    }
+
+    /**
+     * 批量删除文件
+     * @param view
+     * @param imageList
+     */
+    public static void deletFiles(View view, List<Image_cloud> imageList) {
+        String[] urls = new String[imageList.size()];
+        for (int i = 0; i < imageList.size(); i++) {
+            urls[i] = String.valueOf(imageList.get(i).getUrl());
+        }
+        BmobFile.deleteBatch(urls, new DeleteBatchListener() {
+
+            @Override
+            public void done(String[] failUrls, BmobException e) {
+                if (e == null) {
+                    Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
+                } else {
+                    if (failUrls != null) {
+                        Snackbar.make(view, "删除失败个数：" + failUrls.length + "," + e.toString(), Snackbar.LENGTH_LONG).show();
+                    } else {
+                        Snackbar.make(view, "全部文件删除失败：" + e.getErrorCode() + "," + e.toString(), Snackbar.LENGTH_LONG).show();
+                    }
+                }
             }
         });
     }
@@ -68,7 +118,7 @@ public class Operation {
      * 查询多条数据
      */
     public static void query(View view, EmoticonsFragment emoticonsFragment) {
-        final List<Image> imagesList = new ArrayList<>();
+        final List<Image_cloud> imagesList = new ArrayList<>();
 
         BmobQuery<PersonEmoticon> bmobQuery = new BmobQuery<>();
         bmobQuery.findObjects(new FindListener<PersonEmoticon>() {
@@ -76,15 +126,15 @@ public class Operation {
             public void done(List<PersonEmoticon> personEmoticons, BmobException e) {
                 if (e == null) {
                     for (int i = 0; i < personEmoticons.size(); i++) {
-                        Image image = new Image();
+                        Image_cloud image = new Image_cloud();
                         image.setId(personEmoticons.get(i).getObjectId());
                         image.setUrl(personEmoticons.get(i).getEmoticons().getUrl());
                         image.setObjectId(personEmoticons.get(i).getObjectId());
                         imagesList.add(image);
                     }
-                    Snackbar.make(view, "查询成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
-                    emoticonsFragment.WriteToGreenDao((ArrayList<Image>) imagesList);
-                    emoticonsFragment.refresh();
+                    Snackbar.make(view, "加载成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
+                    emoticonsFragment.WriteToGreenDao((ArrayList<Image_cloud>) imagesList);
+                    emoticonsFragment.refresh(imagesList);
                 } else {
                     Log.e("BMOB", e.toString());
                     Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -142,26 +192,26 @@ public class Operation {
      * @param emoticonsFragment
      * @param image
      */
-    public static void downloadFile(EmoticonsFragment emoticonsFragment, Context context, Image image) {
+    public static void downloadFile(EmoticonsFragment emoticonsFragment, Context context, Image_cloud image) {
         MainActivity mainActivity = (MainActivity) context;
         BmobQuery<PersonEmoticon> query = new BmobQuery<>();
-        if (image.getPath()!=null&&new File(image.getPath()).exists()) {
+        if (image.getPath() != null && new File(image.getPath()).exists()) {
             mainActivity.shareImgToQQ(image.getPath());
         } else {
             query.getObject(image.getObjectId(), new QueryListener<PersonEmoticon>() {
                 @Override
                 public void done(PersonEmoticon personEmoticon, BmobException e) {
                     if (e == null) {
-                        download(emoticonsFragment, context, personEmoticon.getEmoticons(), image,mainActivity);
+                        download(emoticonsFragment, context, personEmoticon.getEmoticons(), image, mainActivity);
                     }
                 }
             });
         }
     }
 
-    private static void download(EmoticonsFragment emoticonsFragment, Context context, BmobFile emoticons, Image image,Activity activity) {
+    private static void download(EmoticonsFragment emoticonsFragment, Context context, BmobFile emoticons, Image_cloud image, Activity activity) {
         MainActivity mainActivity = (MainActivity) context;
-        File saveFile = new File(context.getExternalCacheDir(), emoticons.getFilename() + "/.nomedia");
+        File saveFile = new File(context.getExternalCacheDir(), emoticons.getFilename());
 
         emoticons.download(saveFile, new DownloadFileListener() {
             @Override
@@ -169,8 +219,11 @@ public class Operation {
                 if (e == null) {
                     image.setPath(path);
                     emoticonsFragment.updateImage(image);
+
+                    //QQ分享
                     mainActivity.shareImgToQQ(image.getPath());
                 }
+
             }
 
             @Override
@@ -187,7 +240,7 @@ public class Operation {
             @Override
             public void doneError(int code, String msg) {
                 super.doneError(code, msg);
-                ToastUtils.shortToast(context,"请检查网络连接！");
+                ToastUtils.shortToast(context, "请检查网络连接！");
             }
         });
     }

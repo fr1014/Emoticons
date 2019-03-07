@@ -23,14 +23,14 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         ConfiguesDao.createTable(db, ifNotExists);
         EmoticonsDao.createTable(db, ifNotExists);
-        ImageDao.createTable(db, ifNotExists);
+        Image_cloudDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         ConfiguesDao.dropTable(db, ifExists);
         EmoticonsDao.dropTable(db, ifExists);
-        ImageDao.dropTable(db, ifExists);
+        Image_cloudDao.dropTable(db, ifExists);
     }
 
     /**
@@ -51,7 +51,7 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(ConfiguesDao.class);
         registerDaoClass(EmoticonsDao.class);
-        registerDaoClass(ImageDao.class);
+        registerDaoClass(Image_cloudDao.class);
     }
 
     public DaoSession newSession() {

@@ -3,20 +3,21 @@ package com.study.emoticons.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.study.emoticons.R;
+import com.study.emoticons.greendao.dao.Image_cloudDao;
+import com.study.emoticons.model.Image_cloud;
+import com.study.emoticons.utils.ToastUtils;
 import com.study.emoticons.view.adapter.ImageAdapter_second;
 import com.study.emoticons.base.BaseFragment;
 import com.study.emoticons.bmob.Operation;
-import com.study.emoticons.greendao.dao.ImageDao;
 import com.study.emoticons.imageselector.utils.ImageSelector;
-import com.study.emoticons.model.Image;
 import com.study.emoticons.utils.ListUtil;
 
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class EmoticonsFragment extends BaseFragment {
+public class EmoticonsFragment extends BaseFragment implements View.OnClickListener {
+    private static final String TAG = "EmoticonsFragment";
 
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
@@ -36,8 +38,12 @@ public class EmoticonsFragment extends BaseFragment {
     RecyclerView grid_recycler;
     @BindView(R.id.select)
     ImageView iv_select;
+    @BindView(R.id.refresh)
+    ImageView iv_refresh;
+    @BindView(R.id.delet)
+    ImageView iv_delet;
     private ImageAdapter_second imageAdapter;
-    private List<Image> imageList = new ArrayList<>();
+    private List<Image_cloud> imageList = new ArrayList<>();
 
     public static EmoticonsFragment newInstance(String s) {
         emoticonsFragment = new EmoticonsFragment();
@@ -60,6 +66,8 @@ public class EmoticonsFragment extends BaseFragment {
     @Override
     protected void initArguments(Bundle bundle) {
         iv_select.setVisibility(View.VISIBLE);
+        iv_refresh.setVisibility(View.VISIBLE);
+        iv_delet.setVisibility(View.VISIBLE);
         if (bundle != null) {
             String text = bundle.getString("args");
             tv_toolbar.setText(text);
@@ -78,23 +86,32 @@ public class EmoticonsFragment extends BaseFragment {
         grid_recycler.setLayoutManager(gridLayoutManager);
         imageAdapter = new ImageAdapter_second(context, emoticonsFragment);
         grid_recycler.setAdapter(imageAdapter);
-        initListener(this);
+        iv_select.setOnClickListener(this);
+        iv_refresh.setOnClickListener(this);
+        iv_delet.setOnClickListener(this);
         initData();
 
     }
 
-    private void initListener(Fragment fragment) {
-        iv_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.select:
                 ImageSelector.builder()
                         .useCamera(true)
                         .setSingle(false)
                         .setViewImage(true)
                         .setMaxSelectCount(9)
-                        .start(fragment, REQUEST_CODE);
-            }
-        });
+                        .start(this, REQUEST_CODE);
+                break;
+            case R.id.refresh:
+                Operation.query(rootView,emoticonsFragment);
+                break;
+            case R.id.delet:
+                ToastUtils.shortToast(context,"点击");
+
+                break;
+        }
     }
 
     //初始化数据
@@ -102,7 +119,7 @@ public class EmoticonsFragment extends BaseFragment {
         imageList = QueryDao();
 
         if (!ListUtil.isEmpty(imageList)) {
-            imageAdapter.refresh(imageList);
+            emoticonsFragment.refresh(imageList);
         } else {
             Operation.query(rootView, emoticonsFragment);
         }
@@ -117,34 +134,37 @@ public class EmoticonsFragment extends BaseFragment {
 
             //上传文件到云端数据库
             Operation.upload(images, rootView);
-            Operation.query(rootView, emoticonsFragment);
 
+            Operation.query(rootView, emoticonsFragment);
         }
     }
 
     //写入本地数据库
-    public void WriteToGreenDao(ArrayList<Image> images) {
+    public void WriteToGreenDao(ArrayList<Image_cloud> images) {
 
-        ImageDao imagesDao = daoSession.getImageDao();
+        Image_cloudDao imagesDao = daoSession.getImage_cloudDao();
 
-        for (Image newImage : images) {
+        for (Image_cloud newImage : images) {
             imagesDao.insertOrReplace(newImage);
         }
 
     }
 
     //查询本地数据库
-    public  List<Image> QueryDao() {
+    public List<Image_cloud> QueryDao() {
 
-        imageList = daoSession.getImageDao().queryBuilder().list();
+        imageList = daoSession.getImage_cloudDao().queryBuilder().list();
+        if (!ListUtil.isEmpty(imageList)) {
+            Log.d(TAG, "fan" + imageList.get(imageList.size() - 1).getUrl());
+        }
         return imageList;
     }
 
-    public void updateImage(Image image) {
+    public void updateImage(Image_cloud image) {
 
         //使用主键查询需要修改的数据
-        ImageDao imageDao = daoSession.getImageDao();
-        Image newImage = imageDao.load(image.getId());
+        Image_cloudDao imageDao = daoSession.getImage_cloudDao();
+        Image_cloud newImage = imageDao.load(image.getId());
 
         //修改本地路径
         newImage.setPath(image.getPath());
@@ -152,8 +172,8 @@ public class EmoticonsFragment extends BaseFragment {
         imageDao.update(newImage);
     }
 
-    public void refresh(){
-        imageAdapter.refresh(QueryDao());
+    public void refresh(List<Image_cloud> images){
+        imageAdapter.refresh(images);
     }
 
 }

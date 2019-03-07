@@ -18,17 +18,7 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.text_toolbar)
     TextView tv_toolbar;
 
-    int[] mPlaceList = new int[]{R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6, R.drawable.emoticon1, R.drawable.emoticon2, R.drawable.emoticon3,
-            R.drawable.emoticon4, R.drawable.emoticon5, R.drawable.emoticon6};
+    int[] mPlaceList = new int[]{};
 
     public static HomeFragment newInstance(String s) {
         HomeFragment homeFragment = new HomeFragment();

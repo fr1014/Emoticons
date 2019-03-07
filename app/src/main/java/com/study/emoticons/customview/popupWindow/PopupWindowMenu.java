@@ -5,13 +5,10 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.study.emoticons.R;
-
-import jp.wasabeef.blurry.Blurry;
 
 public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.OnClickListener {
     private CommonPopupWindow popupWindow;
@@ -19,7 +16,6 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
     private View view;
     private RelativeLayout layout;
     private Handler mHandler = new Handler();
-    private View bgView;
 
     private ImageView upload;
     private ImageView close;
@@ -32,7 +28,7 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
     public void init() {
 
         layout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.more_window, null);
-        bgView = layout.findViewById(R.id.rel);
+
         if (popupWindow != null && popupWindow.isShowing()) return;
 
         popupWindow = new CommonPopupWindow
@@ -44,13 +40,6 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
                 .setOutsideTouchable(false)
                 .showAtLocation(view, Gravity.BOTTOM, 0, 0)
                 .create();
-
-//        Blurry.with(context)
-//                .radius(22)
-//                .sampling(4)
-//                .async()
-//                .animate(200)
-//                .onto((ViewGroup) view);
     }
 
     @Override
@@ -74,13 +63,11 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
                 if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
-                Blurry.delete((ViewGroup) this.view);
                 break;
             case R.id.close:
                 if (popupWindow != null) {
                     popupWindow.dismiss();
                 }
-                Blurry.delete((ViewGroup) this.view);
                 break;
         }
     }

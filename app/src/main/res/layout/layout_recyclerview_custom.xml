@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="1dp">
+    android:layout_margin="5dp"
+   >
 
     <com.study.emoticons.customview.view.MyImageView
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="centerCrop" />
 
     <com.study.emoticons.customview.view.MyImageView
@@ -17,12 +19,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <ImageView
-        android:id="@+id/iv_gif"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="right|bottom"
-        android:padding="3dp"
-        android:src="@drawable/ic_gif"
-        android:visibility="gone" />
 </FrameLayout>

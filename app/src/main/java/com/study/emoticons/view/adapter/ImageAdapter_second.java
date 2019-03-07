@@ -12,18 +12,16 @@ import com.study.emoticons.R;
 import com.study.emoticons.utils.GlideUtils;
 import com.study.emoticons.bmob.Operation;
 import com.study.emoticons.view.fragment.EmoticonsFragment;
-import com.study.emoticons.model.Image;
+import com.study.emoticons.model.Image_cloud;
 
 import java.util.List;
 
 public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_second.PalceViewHolder> {
-    private static final String TAG = "ImageAdapter_second";
+
     private Context context;
-    private List<Image> mImages;
+    private List<Image_cloud> mImages;
     private LayoutInflater mInFlater;
     private EmoticonsFragment emoticonsFragment;
-
-    private Boolean LOAD_FLAG = false;
 
     public ImageAdapter_second(Context context, EmoticonsFragment emoticonsFragment) {
         this.context = context;
@@ -31,7 +29,7 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         this.emoticonsFragment = emoticonsFragment;
     }
 
-    public List<Image> getImages() {
+    public List<Image_cloud> getImages() {
         return mImages;
     }
 
@@ -66,7 +64,7 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         return mImages == null ? 0 : mImages.size();
     }
 
-    public void refresh(List<Image> images) {
+    public void refresh(List<Image_cloud> images) {
         mImages = images;
         notifyDataSetChanged();
     }
