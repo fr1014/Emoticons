@@ -3,15 +3,13 @@ package com.study.emoticons.view.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.study.emoticons.R;
-import com.study.emoticons.view.activity.MainActivity;
+import com.study.emoticons.utils.GlideUtils;
 import com.study.emoticons.bmob.Operation;
 import com.study.emoticons.view.fragment.EmoticonsFragment;
 import com.study.emoticons.model.Image;
@@ -23,16 +21,13 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
     private Context context;
     private List<Image> mImages;
     private LayoutInflater mInFlater;
-
-    private MainActivity mainActivity;
     private EmoticonsFragment emoticonsFragment;
 
-    private Boolean LOAD_FLAG  = false;
+    private Boolean LOAD_FLAG = false;
 
-    public ImageAdapter_second(Context context,EmoticonsFragment emoticonsFragment) {
+    public ImageAdapter_second(Context context, EmoticonsFragment emoticonsFragment) {
         this.context = context;
         mInFlater = LayoutInflater.from(context);
-        mainActivity = (MainActivity) context;
         this.emoticonsFragment = emoticonsFragment;
     }
 
@@ -49,18 +44,9 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
 
     @Override
     public void onBindViewHolder(@NonNull PalceViewHolder palceViewHolder, int i) {
-        String image = mImages.get(i).getUrl();
-//        if (LOAD_FLAG){
-            Glide
-                    .with(context)
-                    .load(image)
-                    .into(palceViewHolder.mImage);
-//        }else {
-//            Glide
-//                    .with(context)
-//                    .load(new File(image))
-//                    .into(palceViewHolder.mImage);
-//        }
+        String imageUrl = mImages.get(i).getUrl();
+
+        GlideUtils.load(context,imageUrl,palceViewHolder.mImage);
 
         /**
          * 单击图片分享给好友
@@ -68,9 +54,8 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         palceViewHolder.mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Operation.downloadFile(emoticonsFragment,context,mImages.get(i));
-                Log.d(TAG, "fan"+mImages.get(i).getPath());
-                mainActivity.shareImgToQQ(mImages.get(i).getPath());
 
             }
         });
@@ -81,16 +66,10 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         return mImages == null ? 0 : mImages.size();
     }
 
-    public  void refresh(List<Image> images) {
+    public void refresh(List<Image> images) {
         mImages = images;
         notifyDataSetChanged();
     }
-
-//    public void refresh_url(List<Image> imageList,Boolean load_flag) {
-//        this.LOAD_FLAG = load_flag;
-//        mImages = imageList;
-//        notifyDataSetChanged();
-//    }
 
     public class PalceViewHolder extends RecyclerView.ViewHolder {
         ImageView mImage;

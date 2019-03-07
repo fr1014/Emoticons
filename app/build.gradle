@@ -57,9 +57,11 @@ dependencies {
     implementation 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
     // If you want pre-written Activities and Fragments you can subclass as providers
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
+
     //Glide--图片加载
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
     //数据库
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.jakewharton:butterknife:9.0.0-rc3'

@@ -15,7 +15,7 @@ import com.study.emoticons.model.Image;
 /** 
  * DAO for table "IMAGE".
 */
-public class ImageDao extends AbstractDao<Image, Long> {
+public class ImageDao extends AbstractDao<Image, String> {
 
     public static final String TABLENAME = "IMAGE";
 
@@ -24,7 +24,7 @@ public class ImageDao extends AbstractDao<Image, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, String.class, "id", true, "ID");
         public final static Property Path = new Property(1, String.class, "path", false, "PATH");
         public final static Property Url = new Property(2, String.class, "url", false, "URL");
         public final static Property ObjectId = new Property(3, String.class, "objectId", false, "OBJECT_ID");
@@ -43,7 +43,7 @@ public class ImageDao extends AbstractDao<Image, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"IMAGE\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"PATH\" TEXT," + // 1: path
                 "\"URL\" TEXT," + // 2: url
                 "\"OBJECT_ID\" TEXT);"); // 3: objectId
@@ -59,9 +59,9 @@ public class ImageDao extends AbstractDao<Image, Long> {
     protected final void bindValues(DatabaseStatement stmt, Image entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
+        String id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindString(1, id);
         }
  
         String path = entity.getPath();
@@ -84,9 +84,9 @@ public class ImageDao extends AbstractDao<Image, Long> {
     protected final void bindValues(SQLiteStatement stmt, Image entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
+        String id = entity.getId();
         if (id != null) {
-            stmt.bindLong(1, id);
+            stmt.bindString(1, id);
         }
  
         String path = entity.getPath();
@@ -106,14 +106,14 @@ public class ImageDao extends AbstractDao<Image, Long> {
     }
 
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public Image readEntity(Cursor cursor, int offset) {
         Image entity = new Image( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // path
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // url
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // objectId
@@ -123,20 +123,19 @@ public class ImageDao extends AbstractDao<Image, Long> {
      
     @Override
     public void readEntity(Cursor cursor, Image entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setPath(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setUrl(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setObjectId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override
-    protected final Long updateKeyAfterInsert(Image entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected final String updateKeyAfterInsert(Image entity, long rowId) {
+        return entity.getId();
     }
     
     @Override
-    public Long getKey(Image entity) {
+    public String getKey(Image entity) {
         if(entity != null) {
             return entity.getId();
         } else {

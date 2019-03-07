@@ -25,7 +25,6 @@ import java.util.List;
 import butterknife.BindView;
 
 public class EmoticonsFragment extends BaseFragment {
-    private static final String TAG = "EmoticonsFragment";
 
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
@@ -125,41 +124,21 @@ public class EmoticonsFragment extends BaseFragment {
 
     //写入本地数据库
     public void WriteToGreenDao(ArrayList<Image> images) {
-        List<Image> imagesList = new ArrayList<>();
-
-        for (Image image : images) {
-            Image img = new Image();
-            img.setUrl(image.getUrl());
-            img.setObjectId(image.getObjectId());
-            imagesList.add(img);
-        }
 
         ImageDao imagesDao = daoSession.getImageDao();
-        //删除之前的数据库
-        if (!ListUtil.isEmpty(imagesList)) {
-            List<Image> list = QueryDao();
-            for (Image oldImage : list) {
-                imagesDao.delete(oldImage);
-            }
+
+        for (Image newImage : images) {
+            imagesDao.insertOrReplace(newImage);
         }
 
-        for (Image newImage : imagesList) {
-            imagesDao.insert(newImage);
-        }
-
-        imageAdapter.refresh(QueryDao());
     }
 
     //查询本地数据库
-    private List<Image> QueryDao() {
-        imageList = daoSession.getImageDao().queryBuilder().list();
+    public  List<Image> QueryDao() {
 
+        imageList = daoSession.getImageDao().queryBuilder().list();
         return imageList;
     }
-
-//    public void LoadEmoticons(List<Image> imageList, Boolean load_flag) {
-//        imageAdapter.refresh_url(imageList, load_flag);
-//    }
 
     public void updateImage(Image image) {
 
@@ -171,6 +150,10 @@ public class EmoticonsFragment extends BaseFragment {
         newImage.setPath(image.getPath());
         //修改
         imageDao.update(newImage);
+    }
+
+    public void refresh(){
+        imageAdapter.refresh(QueryDao());
     }
 
 }

@@ -8,13 +8,13 @@ import org.greenrobot.greendao.annotation.Id;
 public class Image {
 
     @Id
-    Long id;
+    String id;
 
     String path; //本地路径
-    String url; //网络路劲
+    String url; //网络路径
     String objectId; //bomb数据库对象标识
-    @Generated(hash = 20386611)
-    public Image(Long id, String path, String url, String objectId) {
+    @Generated(hash = 899378573)
+    public Image(String id, String path, String url, String objectId) {
         this.id = id;
         this.path = path;
         this.url = url;
@@ -23,10 +23,10 @@ public class Image {
     @Generated(hash = 1590301345)
     public Image() {
     }
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getPath() {
@@ -47,5 +47,6 @@ public class Image {
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
+
    
 }
