@@ -145,7 +145,7 @@ public class Operation {
     public static void downloadFile(EmoticonsFragment emoticonsFragment, Context context, Image image) {
         MainActivity mainActivity = (MainActivity) context;
         BmobQuery<PersonEmoticon> query = new BmobQuery<>();
-        if (new File(image.getPath()).exists()) {
+        if (image.getPath()!=null&&new File(image.getPath()).exists()) {
             mainActivity.shareImgToQQ(image.getPath());
         } else {
             query.getObject(image.getObjectId(), new QueryListener<PersonEmoticon>() {
