@@ -19,10 +19,10 @@
 
     <ImageView
         android:id="@+id/iv_select"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_gravity="right"
-        android:padding="3dp"
+        android:padding="4dp"
         android:src="@drawable/icon_image_un_select" />
 
     <ImageView

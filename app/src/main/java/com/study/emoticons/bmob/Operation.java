@@ -27,9 +27,11 @@ import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.QueryListListener;
 import cn.bmob.v3.listener.QueryListener;
+import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadBatchListener;
 
 public class Operation {
+    private static final String TAG = "Operation";
 
     /**
      * 新增多条数据
@@ -65,54 +67,39 @@ public class Operation {
         });
     }
 
-    /**
-     * 批量删除数据
-     *
-     * @param imageList
-     */
-    public static void delet(View view, List<Image_cloud> imageList) {
-        List<BmobObject> personEmoticons = new ArrayList<>();
-
-        for (int i = 0; i < imageList.size(); i++) {
-            PersonEmoticon personEmoticon = new PersonEmoticon();
-            personEmoticon.setObject(imageList.get(i).getObjectId());
-            personEmoticons.add(personEmoticon);
-        }
-
-        new BmobBatch().deleteBatch(personEmoticons).doBatch(new QueryListListener<BatchResult>() {
-            @Override
-            public void done(List<BatchResult> list, BmobException e) {
-                deletFiles(view, imageList);
-            }
-        });
-    }
-
-    /**
-     * 批量删除文件
-     * @param view
-     * @param imageList
-     */
-    public static void deletFiles(View view, List<Image_cloud> imageList) {
-        String[] urls = new String[imageList.size()];
-        for (int i = 0; i < imageList.size(); i++) {
-            urls[i] = String.valueOf(imageList.get(i).getUrl());
-        }
-        BmobFile.deleteBatch(urls, new DeleteBatchListener() {
-
-            @Override
-            public void done(String[] failUrls, BmobException e) {
-                if (e == null) {
-                    Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
-                } else {
-                    if (failUrls != null) {
-                        Snackbar.make(view, "删除失败个数：" + failUrls.length + "," + e.toString(), Snackbar.LENGTH_LONG).show();
-                    } else {
-                        Snackbar.make(view, "全部文件删除失败：" + e.getErrorCode() + "," + e.toString(), Snackbar.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-    }
+//    /**
+//     * 删除多条数据
+//     */
+//    public static void delete(View view, List<Image_cloud> imageList, EmoticonsFragment emoticonsFragment) {
+//        List<BmobObject> personEmoticons = new ArrayList<>();
+//
+//        for (int i = 0; i < imageList.size(); i++) {
+//            PersonEmoticon personEmoticon = new PersonEmoticon();
+//            personEmoticon.setObject(imageList.get(i).getObjectId());
+//            personEmoticons.add(personEmoticon);
+//        }
+//        new BmobBatch().deleteBatch(personEmoticons).doBatch(new QueryListListener<BatchResult>() {
+//
+//            @Override
+//            public void done(List<BatchResult> results, BmobException e) {
+//                if (e == null) {
+//                    for (int i = 0; i < results.size(); i++) {
+//                        BatchResult result = results.get(i);
+//                        BmobException ex = result.getError();
+//                        if (ex == null) {
+//                            Snackbar.make(view, "第" + i + "个数据批量删除成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt(), Snackbar.LENGTH_LONG).show();
+//                        } else {
+//                            Snackbar.make(view, "第" + i + "个数据批量删除失败：" + ex.getMessage() + "," + ex.getErrorCode(), Snackbar.LENGTH_LONG).show();
+//
+//                        }
+//                    }
+//                    deletFiles(view, imageList, emoticonsFragment);
+//                } else {
+//                    Snackbar.make(view, "失败：" + e.getMessage() + "," + e.getErrorCode(), Snackbar.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 查询多条数据
@@ -219,9 +206,9 @@ public class Operation {
                 if (e == null) {
                     image.setPath(path);
                     emoticonsFragment.updateImage(image);
-
                     //QQ分享
                     mainActivity.shareImgToQQ(image.getPath());
+
                 }
 
             }
@@ -241,6 +228,53 @@ public class Operation {
             public void doneError(int code, String msg) {
                 super.doneError(code, msg);
                 ToastUtils.shortToast(context, "请检查网络连接！");
+            }
+        });
+    }
+
+    /**
+     * 删除对象
+     */
+    public static void delete(View view, List<Image_cloud> image_clouds, EmoticonsFragment emoticonsFragment) {
+        for (int i = 0; i < image_clouds.size(); i++) {
+            PersonEmoticon category = new PersonEmoticon();
+            category.delete(image_clouds.get(i).getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        Snackbar.make(view, "云端数据删除成功", Snackbar.LENGTH_LONG).show();
+                    } else {
+                        Log.e("BMOB", e.toString());
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            });
+            if (i == image_clouds.size() - 1) {
+                deletFiles(view, image_clouds, emoticonsFragment);
+                emoticonsFragment.deletImage(image_clouds);
+            }
+        }
+
+    }
+
+    /**
+     * 批量删除文件
+     *
+     * @param view
+     * @param imageList
+     */
+    public static void deletFiles(View view, List<Image_cloud> imageList, EmoticonsFragment emoticonsFragment) {
+        String[] urls = new String[imageList.size()];
+        for (int i = 0; i < imageList.size(); i++) {
+            urls[i] = String.valueOf(imageList.get(i).getUrl());
+        }
+        BmobFile.deleteBatch(urls, new DeleteBatchListener() {
+
+            @Override
+            public void done(String[] failUrls, BmobException e) {
+                if (e == null) {
+//                        Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

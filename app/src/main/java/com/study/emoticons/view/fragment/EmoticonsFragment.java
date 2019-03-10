@@ -26,7 +26,6 @@ import java.util.List;
 import butterknife.BindView;
 
 public class EmoticonsFragment extends BaseFragment implements View.OnClickListener {
-    private static final String TAG = "EmoticonsFragment";
 
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
@@ -42,6 +41,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
     ImageView iv_refresh;
     @BindView(R.id.delet)
     ImageView iv_delet;
+
     private ImageAdapter_second imageAdapter;
     private List<Image_cloud> imageList = new ArrayList<>();
 
@@ -105,12 +105,21 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
                         .start(this, REQUEST_CODE);
                 break;
             case R.id.refresh:
-                Operation.query(rootView,emoticonsFragment);
+                Operation.query(rootView, emoticonsFragment);
                 break;
             case R.id.delet:
-                ToastUtils.shortToast(context,"点击");
-
+                List<Image_cloud> image_clouds = imageAdapter.getSelectImages();
+                if (ListUtil.isEmpty(image_clouds)) {
+                    imageAdapter.setVisibility(true);
+                    ToastUtils.shortToast(context, "请选择需要删除的表情后，再次点击此处！");
+                } else {
+                    Operation.delete(rootView,image_clouds,emoticonsFragment);
+//                    Operation.delete(rootView,image_clouds,emoticonsFragment);
+                    imageAdapter.clearSelectImages();
+                    imageAdapter.setVisibility(false);
+                }
                 break;
+
         }
     }
 
@@ -154,9 +163,6 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
     public List<Image_cloud> QueryDao() {
 
         imageList = daoSession.getImage_cloudDao().queryBuilder().list();
-        if (!ListUtil.isEmpty(imageList)) {
-            Log.d(TAG, "fan" + imageList.get(imageList.size() - 1).getUrl());
-        }
         return imageList;
     }
 
@@ -172,7 +178,19 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
         imageDao.update(newImage);
     }
 
-    public void refresh(List<Image_cloud> images){
+    /**
+     * 删除相应数据
+     * @param image_clouds
+     */
+    public void deletImage(List<Image_cloud> image_clouds) {
+        Image_cloudDao image_cloudDao = daoSession.getImage_cloudDao();
+        for (Image_cloud image_cloud : image_clouds) {
+            image_cloudDao.delete(image_cloud);
+        }
+        imageAdapter.refresh(QueryDao());
+    }
+
+    public void refresh(List<Image_cloud> images) {
         imageAdapter.refresh(images);
     }
 
