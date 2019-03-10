@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.study.emoticons.R;
 import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.base.BaseFragment;
@@ -112,9 +113,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 iv_Head.setVisibility(View.GONE);
                 name.setVisibility(View.GONE);
                 MainActivity.mTencent.logout(MyApplication.appContext);
-                Configues newConfigues = configues;
-                newConfigues.setStatus_online(false);
-                WriteToGreenDao(newConfigues);
+//                Configues newConfigues = configues;
+//                newConfigues.setStatus_online(false);
+//                WriteToGreenDao(newConfigues);
                 break;
         }
     }
@@ -157,6 +158,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         Glide
                 .with(this)
                 .load(img_url)
+                .apply(new RequestOptions().circleCrop())
                 .into(iv_Head);
     }
 

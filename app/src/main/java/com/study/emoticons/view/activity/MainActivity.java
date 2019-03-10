@@ -21,7 +21,6 @@ import com.tencent.tauth.UiError;
 import cn.bmob.v3.Bmob;
 
 public class MainActivity extends BaseActivity {
-    private static final String TAG = "MainActivity";
 
     private TextTabFragment textTabFragment;
     public static Tencent mTencent;
