@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.study.emoticons.R;
 import com.study.emoticons.base.BaseFragment;
-import com.study.emoticons.customview.popupWindow.PopupWindowMenu;
+import com.study.emoticons.view.weight.PopupWindowMenu;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -163,7 +163,7 @@ public class TextTabFragment extends BaseFragment implements View.OnClickListene
     @OnClick(R.id.lin_tab_menu)
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            //高斯模糊效果的弹窗
+
             case R.id.lin_tab_menu:
                 popupWindowMenu = new PopupWindowMenu(context, rootView);
                 popupWindowMenu.init();

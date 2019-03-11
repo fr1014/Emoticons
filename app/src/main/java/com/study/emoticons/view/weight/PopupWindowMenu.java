@@ -1,4 +1,4 @@
-package com.study.emoticons.customview.popupWindow;
+package com.study.emoticons.view.weight;
 
 import android.content.Context;
 import android.os.Handler;
@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.study.emoticons.R;
+import com.study.emoticons.customview.popupWindow.CommonPopupWindow;
 
 public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.OnClickListener {
     private CommonPopupWindow popupWindow;
     private Context context;
     private View view;
-    private RelativeLayout layout;
     private Handler mHandler = new Handler();
 
     private ImageView upload;
@@ -26,8 +26,6 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
     }
 
     public void init() {
-
-        layout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.more_window, null);
 
         if (popupWindow != null && popupWindow.isShowing()) return;
 
@@ -49,8 +47,8 @@ public class PopupWindowMenu implements CommonPopupWindow.ViewInterface, View.On
             case R.layout.more_window:
                 upload = view.findViewById(R.id.ic_upload);
                 close = view.findViewById(R.id.close);
-                upload.setOnClickListener(this::onClick);
-                close.setOnClickListener(this::onClick);
+                upload.setOnClickListener(this);
+                close.setOnClickListener(this);
                 colseAnimation();
                 break;
         }

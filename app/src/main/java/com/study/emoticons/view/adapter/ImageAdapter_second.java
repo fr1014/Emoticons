@@ -68,6 +68,14 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
                 checkedImage(palceViewHolder, mImages.get(i));
             }
         });
+
+        palceViewHolder.mImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                emoticonsFragment.photoView();
+                return true;
+            }
+        });
     }
 
     private void checkedImage(PalceViewHolder palceViewHolder, Image_cloud image_cloud) {
@@ -140,6 +148,11 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
     public void refresh(List<Image_cloud> images) {
         mImages = images;
         notifyDataSetChanged();
+    }
+
+    public void removeData(int position){
+        mImages.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class PalceViewHolder extends RecyclerView.ViewHolder {

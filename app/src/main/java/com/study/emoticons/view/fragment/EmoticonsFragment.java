@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import com.study.emoticons.base.BaseFragment;
 import com.study.emoticons.bmob.Operation;
 import com.study.emoticons.imageselector.utils.ImageSelector;
 import com.study.emoticons.utils.ListUtil;
+import com.study.emoticons.view.weight.PopupWindowPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
 
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
+    private PopupWindowPhoto popupWindowPhoto;
     @BindView(R.id.root_view)
     CoordinatorLayout rootView;
     @BindView(R.id.text_toolbar)
@@ -192,6 +193,11 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
 
     public void refresh(List<Image_cloud> images) {
         imageAdapter.refresh(images);
+    }
+
+    public void photoView(){
+        popupWindowPhoto = new PopupWindowPhoto(context,rootView);
+        popupWindowPhoto.init();
     }
 
 }
