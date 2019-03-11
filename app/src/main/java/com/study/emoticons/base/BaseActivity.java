@@ -38,9 +38,9 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
 
         ActivityStackManager.getManager().push(this);
-        initConfig(savedInstanceState);
         setContentView(getLayoutId());
         unbinder = ButterKnife.bind(this);
+        initConfig(savedInstanceState);
         context = this;
         activity = this;
         daoSession = getDaoSession();

@@ -18,6 +18,7 @@ import com.study.emoticons.base.BaseFragment;
 import com.study.emoticons.constans.Constans;
 import com.study.emoticons.greendao.dao.ConfiguesDao;
 import com.study.emoticons.model.Configues;
+import com.study.emoticons.utils.GlideUtils;
 import com.study.emoticons.utils.ListUtil;
 import com.study.emoticons.utils.ToastUtils;
 import com.study.emoticons.view.activity.MainActivity;
@@ -155,11 +156,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         name.setText(user_name);
         name.setVisibility(View.VISIBLE);
         String img_url = user_head_img.replace("http", "https");
-        Glide
-                .with(this)
-                .load(img_url)
-                .apply(new RequestOptions().circleCrop())
-                .into(iv_Head);
+
+        GlideUtils.load(context,img_url,iv_Head,new RequestOptions().circleCrop());
     }
 
     /**

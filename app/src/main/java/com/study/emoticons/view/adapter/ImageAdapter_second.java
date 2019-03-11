@@ -72,7 +72,12 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         palceViewHolder.mImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                emoticonsFragment.photoView();
+                String path = mImages.get(i).getPath();
+                if (path == null) {
+                    emoticonsFragment.photoView(imageUrl);
+                } else {
+                    emoticonsFragment.photoView(path);
+                }
                 return true;
             }
         });
@@ -150,7 +155,7 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
         notifyDataSetChanged();
     }
 
-    public void removeData(int position){
+    public void removeData(int position) {
         mImages.remove(position);
         notifyItemRemoved(position);
     }

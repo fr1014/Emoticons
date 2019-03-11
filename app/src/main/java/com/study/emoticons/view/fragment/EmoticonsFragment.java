@@ -13,12 +13,12 @@ import com.study.emoticons.R;
 import com.study.emoticons.greendao.dao.Image_cloudDao;
 import com.study.emoticons.model.Image_cloud;
 import com.study.emoticons.utils.ToastUtils;
+import com.study.emoticons.view.activity.PhotoViewActivity;
 import com.study.emoticons.view.adapter.ImageAdapter_second;
 import com.study.emoticons.base.BaseFragment;
 import com.study.emoticons.bmob.Operation;
 import com.study.emoticons.imageselector.utils.ImageSelector;
 import com.study.emoticons.utils.ListUtil;
-import com.study.emoticons.view.weight.PopupWindowPhoto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,6 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
 
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
-    private PopupWindowPhoto popupWindowPhoto;
     @BindView(R.id.root_view)
     CoordinatorLayout rootView;
     @BindView(R.id.text_toolbar)
@@ -42,7 +41,6 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
     ImageView iv_refresh;
     @BindView(R.id.delet)
     ImageView iv_delet;
-
     private ImageAdapter_second imageAdapter;
     private List<Image_cloud> imageList = new ArrayList<>();
 
@@ -114,7 +112,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
                     imageAdapter.setVisibility(true);
                     ToastUtils.shortToast(context, "请选择需要删除的表情后，再次点击此处！");
                 } else {
-                    Operation.delete(rootView,image_clouds,emoticonsFragment);
+                    Operation.delete(rootView, image_clouds, emoticonsFragment);
 //                    Operation.delete(rootView,image_clouds,emoticonsFragment);
                     imageAdapter.clearSelectImages();
                     imageAdapter.setVisibility(false);
@@ -181,6 +179,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
 
     /**
      * 删除相应数据
+     *
      * @param image_clouds
      */
     public void deletImage(List<Image_cloud> image_clouds) {
@@ -195,9 +194,10 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
         imageAdapter.refresh(images);
     }
 
-    public void photoView(){
-        popupWindowPhoto = new PopupWindowPhoto(context,rootView);
-        popupWindowPhoto.init();
+    public void photoView(String path) {
+        Bundle bundle = new Bundle();
+        bundle.putString("path_args",path);
+        emoticonsFragment.startActivity(PhotoViewActivity.class,bundle);
     }
 
 }
