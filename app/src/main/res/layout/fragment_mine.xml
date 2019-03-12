@@ -1,78 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_view"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_mine"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".view.fragment.EmoticonsFragment">
+    android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/bar"
-        layout="@layout/layout_appbar" />
+    <include layout="@layout/layout_appbar" />
 
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/grid_recycler"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/scroll_view"-->
-    <!--android:layout_gravity="center_vertical" />-->
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/fl_head"
+    <FrameLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bar">
+        android:layout_height="match_parent"/>
 
-        <ImageView
-            android:id="@+id/iv_head"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.172"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="登录"
-            app:layout_constraintBottom_toTopOf="@+id/user_name"
-            app:layout_constraintEnd_toEndOf="@+id/iv_head"
-            app:layout_constraintStart_toStartOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="36dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/iv_head"
-            app:layout_constraintStart_toStartOf="@+id/iv_head"
-            app:layout_constraintTop_toBottomOf="@+id/iv_head"
-            app:layout_constraintVertical_bias="0.0"
-            tools:ignore="MissingConstraints" />
-    </android.support.constraint.ConstraintLayout>
-
-    <ImageView
-        android:id="@+id/iv_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fl_head"
-        android:src="@drawable/ic_find1"/>
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

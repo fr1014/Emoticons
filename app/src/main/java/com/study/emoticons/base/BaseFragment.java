@@ -36,21 +36,23 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 获取daoSession
+     *
      * @return
      */
-    protected DaoSession getDaoSession(){
+    protected DaoSession getDaoSession() {
         return DaoUtils.getDaosession();
     }
 
     /**
      * 获取配置
+     *
      * @return
      */
-    protected List<Configues> getConfiguesList(){
+    protected List<Configues> getConfiguesList() {
         return DaoUtils.getConfiguesList();
     }
 
-    protected String getLoginUser(){
+    protected String getLoginUser() {
         return DaoUtils.getLoginUser();
     }
 
@@ -59,20 +61,20 @@ public abstract class BaseFragment extends RxFragment {
         super.setUserVisibleHint(isVisibleToUser);
         isUIVisible = isVisibleToUser;
 
-        if (isViewCreat && isUIVisible && isFirstVisible){
-            visibleToUser(true,true);
+        if (isViewCreat && isUIVisible && isFirstVisible) {
+            visibleToUser(true, true);
             isFirstVisible = false;
         }
 
-        if (isViewCreat && isUIVisible){
-            visibleToUser(true,false);
+        if (isViewCreat && isUIVisible) {
+            visibleToUser(true, false);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onAttach(context);
         }
     }
@@ -80,13 +82,13 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onCreate(savedInstanceState);
         }
         isFirstVisible = true;
 
         List<Configues> configuesList = getConfiguesList();
-        if (!ListUtil.isEmpty(configuesList)){
+        if (!ListUtil.isEmpty(configuesList)) {
             configues = configuesList.get(0);
         }
     }
@@ -94,15 +96,18 @@ public abstract class BaseFragment extends RxFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (lifeCycleListener != null){
-            lifeCycleListener.onCreateView(inflater,container,savedInstanceState);
+        if (lifeCycleListener != null) {
+            lifeCycleListener.onCreateView(inflater, container, savedInstanceState);
         }
-        View view = inflater.inflate(getLayoutId(),container,false);
 
-        unbinder = ButterKnife.bind(this, view);
+        View view = inflater.inflate(getLayoutId(), container, false);
+
         initConfig(savedInstanceState);
+        unbinder = ButterKnife.bind(this, view);
+
         Bundle arguments = getArguments();
         initArguments(arguments);
+
 
         context = getContext();
 
@@ -113,7 +118,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onActivityCreated(savedInstanceState);
         }
         activity = getActivity();
@@ -125,7 +130,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (lifeCycleListener !=null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onStart();
         }
     }
@@ -133,7 +138,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onResume();
         }
     }
@@ -141,7 +146,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onPause();
         }
     }
@@ -149,7 +154,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onStop();
         }
     }
@@ -157,11 +162,11 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onDestroyView();
         }
 
-        if (unbinder != null){
+        if (unbinder != null) {
             unbinder.unbind();
         }
     }
@@ -169,7 +174,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onDestroy();
         }
     }
@@ -177,23 +182,24 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (lifeCycleListener != null){
+        if (lifeCycleListener != null) {
             lifeCycleListener.onDetach();
         }
     }
 
     /**
      * 设置生命周期监听
+     *
      * @param lifeCycleListener
      */
-    public void setOnLifeCycleListener(FragementLifeCycleListener lifeCycleListener){
+    public void setOnLifeCycleListener(FragementLifeCycleListener lifeCycleListener) {
         this.lifeCycleListener = lifeCycleListener;
     }
 
     /**
      * fragment对用户是否可见
      *
-     * @param isVisible  是否可见
+     * @param isVisible      是否可见
      * @param isFirstVisible 是否第一次可见
      */
     protected abstract void visibleToUser(boolean isVisible, boolean isFirstVisible);
@@ -211,6 +217,7 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 获取xml layout
+     *
      * @return
      */
     protected abstract int getLayoutId();
@@ -223,22 +230,24 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 页面跳转
+     *
      * @param clazz
      */
-    public void startActivity(Class<?> clazz){
-        Intent intent = new Intent(context,clazz);
+    public void startActivity(Class<?> clazz) {
+        Intent intent = new Intent(context, clazz);
         startActivity(intent);
     }
 
     /**
      * 页面携带数据跳转
+     *
      * @param clazz
      * @param bundle
      */
-    public void startActivity(Class<?> clazz,Bundle bundle){
+    public void startActivity(Class<?> clazz, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setClass(context,clazz);
-        if (bundle != null){
+        intent.setClass(context, clazz);
+        if (bundle != null) {
             intent.putExtras(bundle);
         }
         startActivity(intent);
@@ -246,20 +255,21 @@ public abstract class BaseFragment extends RxFragment {
 
     /**
      * 包含回调的页面跳转
+     *
      * @param clazz
      * @param requestCode
      */
-    public void startActivityForResult(Class<?> clazz,int requestCode){
+    public void startActivityForResult(Class<?> clazz, int requestCode) {
         Intent intent = new Intent();
-        intent.setClass(context,clazz);
-        startActivityForResult(intent,requestCode);
+        intent.setClass(context, clazz);
+        startActivityForResult(intent, requestCode);
     }
 
-    public void startActivityWithOptions(Class<?> clazz, Bundle options){
+    public void startActivityWithOptions(Class<?> clazz, Bundle options) {
         Intent intent = new Intent();
-        intent.setClass(context,clazz);
-        if (options != null){
-            startActivity(intent,options);
+        intent.setClass(context, clazz);
+        if (options != null) {
+            startActivity(intent, options);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.study.emoticons.view.fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TextTabFragment extends BaseFragment implements View.OnClickListener {
+
     PopupWindowMenu popupWindowMenu;
     @BindView(R.id.root_view)
     RelativeLayout rootView;
@@ -82,6 +84,7 @@ public class TextTabFragment extends BaseFragment implements View.OnClickListene
         emoticons.setOnClickListener(this);
         find.setOnClickListener(this);
         person.setOnClickListener(this);
+
         setFaultFragment();
     }
 

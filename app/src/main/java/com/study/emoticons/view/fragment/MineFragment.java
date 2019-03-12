@@ -5,20 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.study.emoticons.R;
 import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.base.BaseFragment;
-import com.study.emoticons.constans.Constans;
 import com.study.emoticons.greendao.dao.ConfiguesDao;
 import com.study.emoticons.model.Configues;
-import com.study.emoticons.utils.GlideUtils;
 import com.study.emoticons.utils.ListUtil;
 import com.study.emoticons.utils.ToastUtils;
 import com.study.emoticons.view.activity.MainActivity;
@@ -35,20 +34,23 @@ import org.json.JSONObject;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+public class MineFragment extends BaseFragment{
+    private static final String TAG = "MineFragment";
 
     @BindView(R.id.text_toolbar)
     TextView toolbar;
-    @BindView(R.id.iv_head)
-    ImageView iv_Head;
-    @BindView(R.id.login)
-    Button login;
-    @BindView(R.id.user_name)
-    TextView name;
-    @BindView(R.id.iv_logout)
-    ImageView logout;
+    @BindView(R.id.content)
+    FrameLayout contentView;
+
+    //    @BindView(R.id.iv_head)
+//    ImageView iv_Head;
+    //    @BindView(R.id.user_name)
+//    TextView name;
+//    @BindView(R.id.iv_logout)
+//    ImageView logout;
 
     private UserInfo mUserInfo;
     private String user_name;
@@ -85,41 +87,39 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_mine;
+
     }
 
     @Override
     protected void daoBusiness() {
+
         configuesDao = daoSession.getConfiguesDao();
         configuesList = getConfiguesList();
 
-        logout.setOnClickListener(this);
-        if (configues != null && configues.getStatus_online()) {
-            login.setVisibility(View.GONE);
-            loadUserInfo(configues.getUser_name(), configues.getHead_img_url());
-        } else {
-            login.setVisibility(View.VISIBLE);
-            login.setOnClickListener(this);
-        }
+//        logout.setOnClickListener(this);
+//        if (configues != null && configues.getStatus_online()) {
+//            loadUserInfo(configues.getUser_name(), configues.getHead_img_url());
+//        }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.login:
-                //all表示获取所有权限
-                MainActivity.mTencent.login(MineFragment.this, "all", new BaseUiListener());
-                break;
-            case R.id.iv_logout:
-                login.setVisibility(View.VISIBLE);
-                iv_Head.setVisibility(View.GONE);
-                name.setVisibility(View.GONE);
-                MainActivity.mTencent.logout(MyApplication.appContext);
-//                Configues newConfigues = configues;
-//                newConfigues.setStatus_online(false);
-//                WriteToGreenDao(newConfigues);
-                break;
-        }
-    }
+//    @OnClick({R.id.login_qq})
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.login_qq:
+//                //all表示获取所有权限
+//                MainActivity.mTencent.login(MineFragment.this, "all", new BaseUiListener());
+//                break;
+////            case R.id.iv_logout:
+////                login.setVisibility(View.VISIBLE);
+////                iv_Head.setVisibility(View.GONE);
+////                name.setVisibility(View.GONE);
+////                MainActivity.mTencent.logout(MyApplication.appContext);
+//////                Configues newConfigues = configues;
+//////                newConfigues.setStatus_online(false);
+//////                WriteToGreenDao(newConfigues);
+////                break;
+//        }
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -149,16 +149,16 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    /**
-     *  用户登录后，加载头像和用户名
-     */
-    private void loadUserInfo(String user_name, String user_head_img) {
-        name.setText(user_name);
-        name.setVisibility(View.VISIBLE);
-        String img_url = user_head_img.replace("http", "https");
-
-        GlideUtils.load(context,img_url,iv_Head,new RequestOptions().circleCrop());
-    }
+//    /**
+//     * 用户登录后，加载头像和用户名
+//     */
+//    private void loadUserInfo(String user_name, String user_head_img) {
+//        name.setText(user_name);
+//        name.setVisibility(View.VISIBLE);
+//        String img_url = user_head_img.replace("http", "https");
+//
+//        GlideUtils.load(context, img_url, iv_Head, new RequestOptions().circleCrop());
+//    }
 
     /**
      * QQ登录回调
@@ -185,14 +185,13 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                     @Override
                     public void onComplete(Object response) {
                         ToastUtils.shortToast(MyApplication.appContext, "登录成功");
-                        login.setVisibility(View.GONE);
                         JSONObject mUserInfoObj = (JSONObject) response;
                         try {
                             user_name = mUserInfoObj.getString("nickname");
                             user_head_img = mUserInfoObj.getString("figureurl_qq_2");
                             if (user_name != null && user_head_img != null) {
 
-                                loadUserInfo(user_name, user_head_img);
+//                                loadUserInfo(user_name, user_head_img);
 
                                 Configues configues = new Configues();
                                 configues.setOpenid(openID);
