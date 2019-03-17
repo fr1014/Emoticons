@@ -23,7 +23,6 @@ import cn.bmob.v3.Bmob;
 public class MainActivity extends BaseActivity {
 
     private TextTabFragment textTabFragment;
-    public static Tencent mTencent;
     private static final int PERMISSION_WRITE_EXTERNAL_REQUEST_CODE = 0x00000011;
 
     @Override
@@ -47,8 +46,6 @@ public class MainActivity extends BaseActivity {
     protected void doBusiness() {
 
         Bmob.initialize(this,"02f82c2bfdf2a8204bdc09ca4d1aaa83");
-
-        mTencent = Tencent.createInstance(Constans.APP_ID, MyApplication.appContext);
         setBottomNavView();
 
         checkPermission();
@@ -91,8 +88,8 @@ public class MainActivity extends BaseActivity {
         ThreadManager.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (mTencent != null){
-                    mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
+                if (SplashActivity.mTencent != null){
+                    SplashActivity.mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
                 }
             }
         });

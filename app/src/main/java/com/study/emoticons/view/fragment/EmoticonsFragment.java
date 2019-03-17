@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ import butterknife.BindView;
 
 public class EmoticonsFragment extends BaseFragment implements View.OnClickListener {
 
+    private static final String TAG = "EmoticonsFragment";
+
     private static final int REQUEST_CODE = 0x00000011;
     private static EmoticonsFragment emoticonsFragment;
     @BindView(R.id.root_view)
@@ -41,6 +44,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
     ImageView iv_refresh;
     @BindView(R.id.delet)
     ImageView iv_delet;
+    ArrayList<Image_cloud> imageClouds = new ArrayList<>();
     private ImageAdapter_second imageAdapter;
     private List<Image_cloud> imageList = new ArrayList<>();
 
@@ -104,7 +108,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
                         .start(this, REQUEST_CODE);
                 break;
             case R.id.refresh:
-                Operation.query(rootView, emoticonsFragment);
+                Operation.equal(rootView,name,emoticonsFragment);
                 break;
             case R.id.delet:
                 List<Image_cloud> image_clouds = imageAdapter.getSelectImages();
@@ -129,7 +133,7 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
         if (!ListUtil.isEmpty(imageList)) {
             emoticonsFragment.refresh(imageList);
         } else {
-            Operation.query(rootView, emoticonsFragment);
+            Operation.equal(rootView,name,emoticonsFragment);
         }
     }
 
@@ -139,20 +143,34 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
         if (requestCode == REQUEST_CODE && data != null) {
 
             ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+            for (String path : images) {
+                Image_cloud image_cloud = new Image_cloud();
+                image_cloud.setPath(path);
+                image_cloud.setName(name);
+                imageClouds.add(image_cloud);
+            }
 
             //上传文件到云端数据库
-            Operation.upload(images, rootView);
+            Operation.upload(imageClouds, rootView);
 
-            Operation.query(rootView, emoticonsFragment);
+//            Operation.equal(rootView, name, emoticonsFragment);
         }
     }
 
     //写入本地数据库
-    public void WriteToGreenDao(ArrayList<Image_cloud> images) {
+    public void WriteToGreenDao(ArrayList<Image_cloud> newImages) {
 
         Image_cloudDao imagesDao = daoSession.getImage_cloudDao();
 
-        for (Image_cloud newImage : images) {
+//        List<Image_cloud> oldImages = QueryDao();
+//        int oldSize = oldImages.size();
+//        int newSize = newImages.size();
+//        if (oldSize-newSize>0){
+//
+//        }else {
+//
+//        }
+        for (Image_cloud newImage : newImages) {
             imagesDao.insertOrReplace(newImage);
         }
 
@@ -161,7 +179,10 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
     //查询本地数据库
     public List<Image_cloud> QueryDao() {
 
-        imageList = daoSession.getImage_cloudDao().queryBuilder().list();
+        imageList = daoSession.getImage_cloudDao()
+                .queryBuilder()
+                .where(Image_cloudDao.Properties.Name.eq(name))
+                .list();
         return imageList;
     }
 
@@ -196,8 +217,8 @@ public class EmoticonsFragment extends BaseFragment implements View.OnClickListe
 
     public void photoView(String path) {
         Bundle bundle = new Bundle();
-        bundle.putString("path_args",path);
-        emoticonsFragment.startActivity(PhotoViewActivity.class,bundle);
+        bundle.putString("path_args", path);
+        emoticonsFragment.startActivity(PhotoViewActivity.class, bundle);
     }
 
 }

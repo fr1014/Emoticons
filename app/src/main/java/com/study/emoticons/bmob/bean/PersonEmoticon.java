@@ -8,6 +8,7 @@ public class PersonEmoticon extends BmobObject {
 
     private BmobFile emoticons;
     private String object;
+    private String name;
     private BmobRelation likes;
 
     public PersonEmoticon() {
@@ -16,6 +17,14 @@ public class PersonEmoticon extends BmobObject {
 
     public PersonEmoticon(String objectId) {
         setObjectId(objectId);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getObject() {

@@ -15,8 +15,11 @@ import com.study.emoticons.greendao.DaoUtils;
 import com.study.emoticons.greendao.dao.DaoSession;
 import com.study.emoticons.listener.ActivityLifeCycleListener;
 import com.study.emoticons.manager.ActivityStackManager;
+import com.study.emoticons.model.Configues;
 import com.study.emoticons.utils.StatusBarUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -28,6 +31,29 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected ActivityLifeCycleListener lifeCycleListener;
     protected Unbinder unbinder;
     protected DaoSession daoSession;
+    protected String name;
+
+    /**
+     * 获取daoSession
+     *
+     * @return
+     */
+    protected DaoSession getDaoSession() {
+        return DaoUtils.getDaosession();
+    }
+
+    /**
+     * 获取配置
+     *
+     * @return
+     */
+    protected List<Configues> getConfiguesList() {
+        return DaoUtils.getConfiguesList();
+    }
+
+    protected String getLoginUser() {
+        return DaoUtils.getLoginUser();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +70,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         context = this;
         activity = this;
         daoSession = getDaoSession();
+        name= getLoginUser();
 
         Bundle bundle = getIntent().getExtras();
         initBundleData(bundle);
@@ -109,11 +136,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public void setOnLifeCycleListener(ActivityLifeCycleListener lifeCycleListener){
         this.lifeCycleListener = lifeCycleListener;
     }
-
-    protected DaoSession getDaoSession() {
-        return DaoUtils.getDaosession();
-    }
-
     protected abstract void initBundleData(Bundle bundle);
 
     protected abstract void initConfig(Bundle savedInstanceState);

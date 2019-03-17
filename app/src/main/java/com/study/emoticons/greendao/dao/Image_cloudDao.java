@@ -28,6 +28,7 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
         public final static Property Path = new Property(1, String.class, "path", false, "PATH");
         public final static Property Url = new Property(2, String.class, "url", false, "URL");
         public final static Property ObjectId = new Property(3, String.class, "objectId", false, "OBJECT_ID");
+        public final static Property Name = new Property(4, String.class, "name", false, "NAME");
     }
 
 
@@ -46,7 +47,8 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
                 "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"PATH\" TEXT," + // 1: path
                 "\"URL\" TEXT," + // 2: url
-                "\"OBJECT_ID\" TEXT);"); // 3: objectId
+                "\"OBJECT_ID\" TEXT," + // 3: objectId
+                "\"NAME\" TEXT);"); // 4: name
     }
 
     /** Drops the underlying database table. */
@@ -78,6 +80,11 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
         if (objectId != null) {
             stmt.bindString(4, objectId);
         }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(5, name);
+        }
     }
 
     @Override
@@ -103,6 +110,11 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
         if (objectId != null) {
             stmt.bindString(4, objectId);
         }
+ 
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(5, name);
+        }
     }
 
     @Override
@@ -116,7 +128,8 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
             cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // path
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // url
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // objectId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // objectId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // name
         );
         return entity;
     }
@@ -127,6 +140,7 @@ public class Image_cloudDao extends AbstractDao<Image_cloud, String> {
         entity.setPath(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setUrl(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setObjectId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
      }
     
     @Override

@@ -25,10 +25,8 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Openid = new Property(1, String.class, "openid", false, "OPENID");
-        public final static Property Status_online = new Property(2, boolean.class, "status_online", false, "STATUS_ONLINE");
-        public final static Property Head_img_url = new Property(3, String.class, "head_img_url", false, "HEAD_IMG_URL");
-        public final static Property User_name = new Property(4, String.class, "user_name", false, "USER_NAME");
+        public final static Property Head_img_url = new Property(1, String.class, "head_img_url", false, "HEAD_IMG_URL");
+        public final static Property User_name = new Property(2, String.class, "user_name", false, "USER_NAME");
     }
 
 
@@ -45,10 +43,8 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CONFIGUES\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"OPENID\" TEXT," + // 1: openid
-                "\"STATUS_ONLINE\" INTEGER NOT NULL ," + // 2: status_online
-                "\"HEAD_IMG_URL\" TEXT," + // 3: head_img_url
-                "\"USER_NAME\" TEXT);"); // 4: user_name
+                "\"HEAD_IMG_URL\" TEXT," + // 1: head_img_url
+                "\"USER_NAME\" TEXT);"); // 2: user_name
     }
 
     /** Drops the underlying database table. */
@@ -66,20 +62,14 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
             stmt.bindLong(1, id);
         }
  
-        String openid = entity.getOpenid();
-        if (openid != null) {
-            stmt.bindString(2, openid);
-        }
-        stmt.bindLong(3, entity.getStatus_online() ? 1L: 0L);
- 
         String head_img_url = entity.getHead_img_url();
         if (head_img_url != null) {
-            stmt.bindString(4, head_img_url);
+            stmt.bindString(2, head_img_url);
         }
  
         String user_name = entity.getUser_name();
         if (user_name != null) {
-            stmt.bindString(5, user_name);
+            stmt.bindString(3, user_name);
         }
     }
 
@@ -92,20 +82,14 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
             stmt.bindLong(1, id);
         }
  
-        String openid = entity.getOpenid();
-        if (openid != null) {
-            stmt.bindString(2, openid);
-        }
-        stmt.bindLong(3, entity.getStatus_online() ? 1L: 0L);
- 
         String head_img_url = entity.getHead_img_url();
         if (head_img_url != null) {
-            stmt.bindString(4, head_img_url);
+            stmt.bindString(2, head_img_url);
         }
  
         String user_name = entity.getUser_name();
         if (user_name != null) {
-            stmt.bindString(5, user_name);
+            stmt.bindString(3, user_name);
         }
     }
 
@@ -118,10 +102,8 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
     public Configues readEntity(Cursor cursor, int offset) {
         Configues entity = new Configues( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // openid
-            cursor.getShort(offset + 2) != 0, // status_online
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // head_img_url
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // user_name
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // head_img_url
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // user_name
         );
         return entity;
     }
@@ -129,10 +111,8 @@ public class ConfiguesDao extends AbstractDao<Configues, Long> {
     @Override
     public void readEntity(Cursor cursor, Configues entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setOpenid(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setStatus_online(cursor.getShort(offset + 2) != 0);
-        entity.setHead_img_url(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setUser_name(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setHead_img_url(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setUser_name(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
      }
     
     @Override

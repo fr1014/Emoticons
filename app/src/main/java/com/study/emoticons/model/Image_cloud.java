@@ -13,12 +13,15 @@ public class Image_cloud {
     String path; //本地路径
     String url; //网络路径
     String objectId; //bomb数据库对象标识
-    @Generated(hash = 617593868)
-    public Image_cloud(String id, String path, String url, String objectId) {
+    String name;  //用户唯一标识
+    @Generated(hash = 1728983365)
+    public Image_cloud(String id, String path, String url, String objectId,
+            String name) {
         this.id = id;
         this.path = path;
         this.url = url;
         this.objectId = objectId;
+        this.name = name;
     }
     @Generated(hash = 275081787)
     public Image_cloud() {
@@ -47,5 +50,11 @@ public class Image_cloud {
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
-   
+    public String getName() {
+        return this.name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

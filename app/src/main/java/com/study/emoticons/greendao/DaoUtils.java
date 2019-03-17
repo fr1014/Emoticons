@@ -24,7 +24,7 @@ public class DaoUtils {
         ConfiguesDao configuesDao = getDaosession().getConfiguesDao();
         return configuesDao
                 .queryBuilder()
-                .where(ConfiguesDao.Properties.Openid.eq(getLoginUser()))
+                .where(ConfiguesDao.Properties.User_name.eq(getLoginUser()))
                 .list();
     }
 
@@ -34,6 +34,6 @@ public class DaoUtils {
      */
     public static String getLoginUser() {
         SharedPreferences preferences = MyApplication.appContext.getSharedPreferences("login_user", Context.MODE_PRIVATE);
-        return preferences.getString("openId","*");
+        return preferences.getString("name","*");
     }
 }

@@ -1,62 +1,32 @@
 package com.study.emoticons.view.fragment;
 
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.study.emoticons.R;
 import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.base.BaseFragment;
-import com.study.emoticons.greendao.dao.ConfiguesDao;
-import com.study.emoticons.model.Configues;
-import com.study.emoticons.utils.ListUtil;
-import com.study.emoticons.utils.ToastUtils;
-import com.study.emoticons.view.activity.MainActivity;
-import com.tencent.connect.UserInfo;
-import com.tencent.connect.auth.QQToken;
-import com.tencent.connect.common.Constants;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
+import com.study.emoticons.utils.GlideUtils;
+import com.study.emoticons.view.activity.LoginActivity;
+import com.study.emoticons.view.activity.SplashActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class MineFragment extends BaseFragment{
-    private static final String TAG = "MineFragment";
+public class MineFragment extends BaseFragment {
 
     @BindView(R.id.text_toolbar)
     TextView toolbar;
-    @BindView(R.id.content)
-    FrameLayout contentView;
 
-    //    @BindView(R.id.iv_head)
-//    ImageView iv_Head;
+    @BindView(R.id.head_img)
+    ImageView iv_Head;
     //    @BindView(R.id.user_name)
 //    TextView name;
-//    @BindView(R.id.iv_logout)
-//    ImageView logout;
-
-    private UserInfo mUserInfo;
-    private String user_name;
-    private String user_head_img;
-    private ConfiguesDao configuesDao;
-    private List<Configues> configuesList;
 
     public static MineFragment newInstance(String s) {
         MineFragment mineFragment = new MineFragment();
@@ -93,145 +63,33 @@ public class MineFragment extends BaseFragment{
     @Override
     protected void daoBusiness() {
 
-        configuesDao = daoSession.getConfiguesDao();
-        configuesList = getConfiguesList();
-
-//        logout.setOnClickListener(this);
-//        if (configues != null && configues.getStatus_online()) {
-//            loadUserInfo(configues.getUser_name(), configues.getHead_img_url());
-//        }
+        if (configues != null) {
+            loadUserInfo(configues.getHead_img_url());
+        }
     }
 
-//    @OnClick({R.id.login_qq})
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.login_qq:
-//                //all表示获取所有权限
-//                MainActivity.mTencent.login(MineFragment.this, "all", new BaseUiListener());
-//                break;
-////            case R.id.iv_logout:
-////                login.setVisibility(View.VISIBLE);
-////                iv_Head.setVisibility(View.GONE);
-////                name.setVisibility(View.GONE);
-////                MainActivity.mTencent.logout(MyApplication.appContext);
-//////                Configues newConfigues = configues;
-//////                newConfigues.setStatus_online(false);
-//////                WriteToGreenDao(newConfigues);
-////                break;
-//        }
-//    }
+    @OnClick({R.id.rel_un_login})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rel_un_login:
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Tencent.onActivityResultData(requestCode, resultCode, data, new BaseUiListener());
-
-        if (requestCode == Constants.REQUEST_API) {
-            if (resultCode == Constants.REQUEST_LOGIN) {
-                Tencent.handleResultData(data, new BaseUiListener());
-            }
+                SplashActivity.mTencent.logout(MyApplication.appContext);
+                startActivity(LoginActivity.class);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+                break;
         }
-
     }
 
     /**
-     * 写入数据库
-     *
-     * @param configues
+     * 用户登录后，加载头像和用户名
      */
-    private void WriteToGreenDao(Configues configues) {
+    private void loadUserInfo(String user_head_img) {
 
-        if (ListUtil.isEmpty(configuesList)) {
-            configuesDao.insert(configues);
-        } else {
-            configuesDao.update(configues);
-        }
-    }
+        String img_url = user_head_img.replace("http", "https");
 
-//    /**
-//     * 用户登录后，加载头像和用户名
-//     */
-//    private void loadUserInfo(String user_name, String user_head_img) {
-//        name.setText(user_name);
-//        name.setVisibility(View.VISIBLE);
-//        String img_url = user_head_img.replace("http", "https");
-//
-//        GlideUtils.load(context, img_url, iv_Head, new RequestOptions().circleCrop());
-//    }
-
-    /**
-     * QQ登录回调
-     */
-    private class BaseUiListener implements IUiListener {
-        public void onComplete(Object response) {
-
-            JSONObject obj = (JSONObject) response;
-            try {
-                String openID = obj.getString("openid");
-                String accessToken = obj.getString("access_token");
-                String expires = obj.getString("expires_in");
-                MainActivity.mTencent.setOpenId(openID);
-                MainActivity.mTencent.setAccessToken(accessToken, expires);
-
-                //保存当前用户的openid做为标识
-                SharedPreferences.Editor editor = getActivity().getSharedPreferences("login_user", Context.MODE_PRIVATE).edit();
-                editor.putString("openId", openID);
-                editor.apply();
-
-                QQToken qqToken = MainActivity.mTencent.getQQToken();
-                mUserInfo = new UserInfo(MyApplication.appContext, qqToken);
-                mUserInfo.getUserInfo(new IUiListener() {
-                    @Override
-                    public void onComplete(Object response) {
-                        ToastUtils.shortToast(MyApplication.appContext, "登录成功");
-                        JSONObject mUserInfoObj = (JSONObject) response;
-                        try {
-                            user_name = mUserInfoObj.getString("nickname");
-                            user_head_img = mUserInfoObj.getString("figureurl_qq_2");
-                            if (user_name != null && user_head_img != null) {
-
-//                                loadUserInfo(user_name, user_head_img);
-
-                                Configues configues = new Configues();
-                                configues.setOpenid(openID);
-                                configues.setUser_name(user_name);
-                                configues.setHead_img_url(user_head_img);
-                                configues.setStatus_online(true);
-                                WriteToGreenDao(configues);
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(UiError uiError) {
-                        ToastUtils.shortToast(MyApplication.appContext, "登录失败");
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        ToastUtils.shortToast(MyApplication.appContext, "登录取消");
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onError(UiError uiError) {
-            ToastUtils.shortToast(MyApplication.appContext, "授权失败");
-        }
-
-        @Override
-        public void onCancel() {
-            ToastUtils.shortToast(MyApplication.appContext, "授权取消");
-        }
-
+        GlideUtils.load(context, img_url, iv_Head, new RequestOptions().circleCrop());
     }
 
 }

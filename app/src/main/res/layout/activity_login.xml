@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#03F4D8"
+    tools:context="com.study.emoticons.view.activity.LoginActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel_ic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_launcher" />
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/login"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_qq_login" />
+
+    <RelativeLayout
+        android:id="@+id/login"
+        android:onClick="onClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:background="#4EECD1"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp">
+
+        <TextView
+            android:id="@+id/text_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="QQ登录"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

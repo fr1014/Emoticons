@@ -31,7 +31,7 @@ public abstract class BaseFragment extends RxFragment {
     protected boolean isUIVisible;
     protected boolean isFirstVisible;
     protected DaoSession daoSession;
-    protected String openId;
+    protected String name;
     protected Configues configues;
 
     /**
@@ -123,7 +123,7 @@ public abstract class BaseFragment extends RxFragment {
         }
         activity = getActivity();
         daoSession = getDaoSession();
-        openId = getLoginUser();
+        name = getLoginUser();
         daoBusiness();
     }
 

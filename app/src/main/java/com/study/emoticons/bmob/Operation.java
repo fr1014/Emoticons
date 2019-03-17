@@ -31,16 +31,16 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadBatchListener;
 
 public class Operation {
-    private static final String TAG = "Operation";
 
     /**
      * 新增多条数据
      */
-    public static void save(View view, List<BmobFile> files) {
+    public static void save(View view, List<BmobFile> files, ArrayList<Image_cloud> images) {
         List<BmobObject> personEmoticons = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             PersonEmoticon personEmoticon = new PersonEmoticon();
             personEmoticon.setEmoticons(files.get(i));
+            personEmoticon.setName(images.get(i).getName());
             personEmoticons.add(personEmoticon);
         }
         new BmobBatch().insertBatch(personEmoticons).doBatch(new QueryListListener<BatchResult>() {
@@ -52,9 +52,9 @@ public class Operation {
                         BatchResult result = results.get(i);
                         BmobException ex = result.getError();
                         if (ex == null) {
-                            Snackbar.make(view, "第" + i + "个数据批量添加成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, "第" + (i + 1) + "个数据批量添加成功：", Snackbar.LENGTH_LONG).show();
                         } else {
-                            Snackbar.make(view, "第" + i + "个数据批量添加失败：" + ex.getMessage() + "," + ex.getErrorCode(), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, "第" + (i + 1) + "个数据批量添加失败：", Snackbar.LENGTH_LONG).show();
 
                         }
                     }
@@ -117,6 +117,7 @@ public class Operation {
                         image.setId(personEmoticons.get(i).getObjectId());
                         image.setUrl(personEmoticons.get(i).getEmoticons().getUrl());
                         image.setObjectId(personEmoticons.get(i).getObjectId());
+                        image.setName(personEmoticons.get(i).getName());
                         imagesList.add(image);
                     }
                     Snackbar.make(view, "加载成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
@@ -138,12 +139,13 @@ public class Operation {
      * @param images
      * @param view
      */
-    public static void upload(ArrayList<String> images, View view) {
+    public static void upload(ArrayList<Image_cloud> images, View view) {
 
         final String[] filePaths = new String[images.size()];
 
-        for (int i = 0; i < images.size(); i++)
-            filePaths[i] = images.get(i);
+        for (int i = 0; i < images.size(); i++) {
+            filePaths[i] = images.get(i).getPath();
+        }
 
         BmobFile.uploadBatch(filePaths, new UploadBatchListener() {
 
@@ -154,7 +156,7 @@ public class Operation {
                 if (urls.size() == filePaths.length) {//如果数量相等，则代表文件全部上传完成
                     //do something
                     //2.更新数据对象
-                    save(view, files);
+                    save(view, files, images);
                 }
             }
 
@@ -274,6 +276,39 @@ public class Operation {
             public void done(String[] failUrls, BmobException e) {
                 if (e == null) {
 //                        Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * 条件查询
+     */
+    public static void equal(View view, String name, EmoticonsFragment emoticonsFragment) {
+
+        final List<Image_cloud> imagesList = new ArrayList<>();
+
+        BmobQuery<PersonEmoticon> personEmoticonBmobQuery = new BmobQuery<>();
+        personEmoticonBmobQuery.addWhereEqualTo("name", name);
+        personEmoticonBmobQuery.findObjects(new FindListener<PersonEmoticon>() {
+            @Override
+            public void done(List<PersonEmoticon> personEmoticons, BmobException e) {
+                if (e == null) {
+
+                    for (int i = 0; i < personEmoticons.size(); i++) {
+                        Image_cloud image = new Image_cloud();
+                        image.setId(personEmoticons.get(i).getObjectId());
+                        image.setUrl(personEmoticons.get(i).getEmoticons().getUrl());
+                        image.setObjectId(personEmoticons.get(i).getObjectId());
+                        image.setName(personEmoticons.get(i).getName());
+                        imagesList.add(image);
+                    }
+                    Snackbar.make(view, "查询成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
+                    emoticonsFragment.WriteToGreenDao((ArrayList<Image_cloud>) imagesList);
+                    emoticonsFragment.refresh(imagesList);
+                } else {
+                    Log.e("BMOB", e.toString());
+                    Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
         });

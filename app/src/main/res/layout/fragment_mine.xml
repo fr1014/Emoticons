@@ -1,15 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_mine"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/layout_appbar" />
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/layout_appbar" />
 
-    <FrameLayout
-        android:id="@+id/content"
+    <RelativeLayout
+        android:id="@+id/head_rel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/app_bar">
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/head_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_launcher" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/head_rel"
+        android:layout_marginTop="60dp"
+        android:onClick="onClick"
+        android:background="?attr/selectableItemBackground"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="清除缓存"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/int_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="200kb"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/rel_cache"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel_cache"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
+        android:background="?attr/selectableItemBackground"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="检查更新"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/rel_update"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel_update"
+        android:layout_marginTop="5dp"
+        android:onClick="onClick"
+        android:background="?attr/selectableItemBackground"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/text_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:text="关于"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/rel_about"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
+
+    <RelativeLayout
+        android:id="@+id/rel_un_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rel_about"
+        android:layout_marginTop="40dp"
+        android:onClick="onClick"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_theme"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp">
+
+        <TextView
+            android:id="@+id/text_un_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="退出登录"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
