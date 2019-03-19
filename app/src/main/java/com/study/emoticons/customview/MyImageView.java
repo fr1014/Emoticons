@@ -1,4 +1,4 @@
-package com.study.emoticons.customview.view;
+package com.study.emoticons.customview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
