@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login:
+                ToastUtils.shortToast(context, "正在登录...");
                 //all表示获取所有权限
                 SplashActivity.mTencent.login(this, "all", new BaseUiListener());
                 break;
