@@ -106,7 +106,7 @@ public class MineFragment extends BaseFragment {
     }
 
     private void popUnLoginDialog() {
-        new AlertDialog_Common(context, "确定退出登录？", "退出登录", "确定", "取消")
+        new AlertDialog_Common(context, "确定退出登录？", "提示", "确定", "取消")
                 .setOnDiaLogListener(new AlertDialog_Common.OnDialogListener() {
                     @Override
                     public void dialogPositiveListener(View customView, DialogInterface dialogInterface, int which) {
@@ -125,7 +125,7 @@ public class MineFragment extends BaseFragment {
     }
 
     private void popCacheDialog() {
-        new AlertDialog_Common(context, "删除该应用缓存", "清除缓存", "确定", "取消")
+        new AlertDialog_Common(context, "删除该应用缓存", "提示", "确定", "取消")
                 .setOnDiaLogListener(new AlertDialog_Common.OnDialogListener() {
 
                     @Override
