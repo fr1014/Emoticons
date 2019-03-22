@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.study.emoticons.bean.Configues;
+import com.study.emoticons.greendao.DaoUtils;
 import com.study.emoticons.greendao.dao.DaoSession;
 import com.study.emoticons.listener.ActivityLifeCycleListener;
 import com.study.emoticons.listener.FragementLifeCycleListener;
+import com.study.emoticons.utils.ListUtil;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 public class BasePresenter<V, T> implements ActivityLifeCycleListener, FragementLifeCycleListener {
 
@@ -20,11 +24,37 @@ public class BasePresenter<V, T> implements ActivityLifeCycleListener, Fragement
     protected Reference<T> activityRef;
     protected T activity;
     protected DaoSession daoSession;
+    protected String name;
+    //Configure 配置
+    protected Configues configure;
 
     public BasePresenter(V view, T activity) {
         attchView(view);
         attchActivity(activity);
         setListener(activity);
+        name = getLoginUser();
+        daoSession = getDaoSession();
+
+        List<Configues> configureList = getConfigureList();
+        if (!ListUtil.isEmpty(configureList)){
+            configure = configureList.get(0);
+        }
+    }
+
+    private DaoSession getDaoSession() {
+        return DaoUtils.getDaosession();
+    }
+
+    private String getLoginUser() {
+        return DaoUtils.getLoginUser();
+    }
+
+    /**
+     * 获取配置
+     * @return
+     */
+    private List<Configues> getConfigureList() {
+        return DaoUtils.getConfiguesList();
     }
 
     /**

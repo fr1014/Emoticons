@@ -8,9 +8,9 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import com.study.emoticons.model.Configues;
-import com.study.emoticons.model.Emoticons;
-import com.study.emoticons.model.Image_cloud;
+import com.study.emoticons.bean.Configues;
+import com.study.emoticons.bean.Emoticons;
+import com.study.emoticons.bean.Image_cloud;
 
 import com.study.emoticons.greendao.dao.ConfiguesDao;
 import com.study.emoticons.greendao.dao.EmoticonsDao;

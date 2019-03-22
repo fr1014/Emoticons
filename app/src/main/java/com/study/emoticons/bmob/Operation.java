@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.study.emoticons.bmob.bean.PersonEmoticon;
-import com.study.emoticons.model.Image_cloud;
+import com.study.emoticons.bean.Image_cloud;
+import com.study.emoticons.presenter.MainPresenter;
 import com.study.emoticons.utils.ToastUtils;
 import com.study.emoticons.view.activity.MainActivity;
-import com.study.emoticons.view.fragment.EmoticonsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,74 +62,7 @@ public class Operation {
                     Snackbar.make(view, "失败：" + e.getMessage() + "," + e.getErrorCode(), Snackbar.LENGTH_LONG).show();
                 }
 
-
             }
-        });
-    }
-
-//    /**
-//     * 删除多条数据
-//     */
-//    public static void delete(View view, List<Image_cloud> imageList, EmoticonsFragment emoticonsFragment) {
-//        List<BmobObject> personEmoticons = new ArrayList<>();
-//
-//        for (int i = 0; i < imageList.size(); i++) {
-//            PersonEmoticon personEmoticon = new PersonEmoticon();
-//            personEmoticon.setObject(imageList.get(i).getObjectId());
-//            personEmoticons.add(personEmoticon);
-//        }
-//        new BmobBatch().deleteBatch(personEmoticons).doBatch(new QueryListListener<BatchResult>() {
-//
-//            @Override
-//            public void done(List<BatchResult> results, BmobException e) {
-//                if (e == null) {
-//                    for (int i = 0; i < results.size(); i++) {
-//                        BatchResult result = results.get(i);
-//                        BmobException ex = result.getError();
-//                        if (ex == null) {
-//                            Snackbar.make(view, "第" + i + "个数据批量删除成功：" + result.getCreatedAt() + "," + result.getObjectId() + "," + result.getUpdatedAt(), Snackbar.LENGTH_LONG).show();
-//                        } else {
-//                            Snackbar.make(view, "第" + i + "个数据批量删除失败：" + ex.getMessage() + "," + ex.getErrorCode(), Snackbar.LENGTH_LONG).show();
-//
-//                        }
-//                    }
-//                    deletFiles(view, imageList, emoticonsFragment);
-//                } else {
-//                    Snackbar.make(view, "失败：" + e.getMessage() + "," + e.getErrorCode(), Snackbar.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//    }
-
-    /**
-     * 查询多条数据
-     */
-    public static void query(View view, EmoticonsFragment emoticonsFragment) {
-        final List<Image_cloud> imagesList = new ArrayList<>();
-
-        BmobQuery<PersonEmoticon> bmobQuery = new BmobQuery<>();
-        bmobQuery.findObjects(new FindListener<PersonEmoticon>() {
-            @Override
-            public void done(List<PersonEmoticon> personEmoticons, BmobException e) {
-                if (e == null) {
-                    for (int i = 0; i < personEmoticons.size(); i++) {
-                        Image_cloud image = new Image_cloud();
-                        image.setId(personEmoticons.get(i).getObjectId());
-                        image.setUrl(personEmoticons.get(i).getEmoticons().getUrl());
-                        image.setObjectId(personEmoticons.get(i).getObjectId());
-                        image.setName(personEmoticons.get(i).getName());
-                        imagesList.add(image);
-                    }
-                    Snackbar.make(view, "加载成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
-                    emoticonsFragment.WriteToGreenDao((ArrayList<Image_cloud>) imagesList);
-                    emoticonsFragment.refresh(imagesList);
-                } else {
-                    Log.e("BMOB", e.toString());
-                    Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-
-            }
-
         });
     }
 
@@ -139,7 +72,7 @@ public class Operation {
      * @param images
      * @param view
      */
-    public static void upload(ArrayList<Image_cloud> images, View view) {
+    public static void upload(ArrayList<Image_cloud> images, View view,MainPresenter mainPresenter) {
 
         final String[] filePaths = new String[images.size()];
 
@@ -173,15 +106,16 @@ public class Operation {
                 //4、totalPercent--表示总的上传进度（百分比）
             }
         });
+
     }
 
     /**
      * 下载文件
      *
-     * @param emoticonsFragment
+     * @param mainPresenter
      * @param image
      */
-    public static void downloadFile(EmoticonsFragment emoticonsFragment, Context context, Image_cloud image) {
+    public static void downloadFile(MainPresenter mainPresenter, Context context, Image_cloud image) {
         MainActivity mainActivity = (MainActivity) context;
         BmobQuery<PersonEmoticon> query = new BmobQuery<>();
         if (image.getPath() != null && new File(image.getPath()).exists()) {
@@ -191,14 +125,14 @@ public class Operation {
                 @Override
                 public void done(PersonEmoticon personEmoticon, BmobException e) {
                     if (e == null) {
-                        download(emoticonsFragment, context, personEmoticon.getEmoticons(), image, mainActivity);
+                        download(mainPresenter, context, personEmoticon.getEmoticons(), image, mainActivity);
                     }
                 }
             });
         }
     }
 
-    private static void download(EmoticonsFragment emoticonsFragment, Context context, BmobFile emoticons, Image_cloud image, Activity activity) {
+    private static void download(MainPresenter mainPresenter, Context context, BmobFile emoticons, Image_cloud image, Activity activity) {
         MainActivity mainActivity = (MainActivity) context;
         File saveFile = new File(context.getExternalCacheDir(), emoticons.getFilename());
 
@@ -207,7 +141,7 @@ public class Operation {
             public void done(String path, BmobException e) {
                 if (e == null) {
                     image.setPath(path);
-                    emoticonsFragment.updateImage(image);
+                    mainPresenter.updateImage(image);
                     //QQ分享
                     mainActivity.shareImgToQQ(image.getPath());
 
@@ -237,14 +171,14 @@ public class Operation {
     /**
      * 删除对象
      */
-    public static void delete(View view, List<Image_cloud> image_clouds, EmoticonsFragment emoticonsFragment) {
+    public static void delete(View view, List<Image_cloud> image_clouds, MainPresenter mainPresenter) {
         for (int i = 0; i < image_clouds.size(); i++) {
             PersonEmoticon category = new PersonEmoticon();
             category.delete(image_clouds.get(i).getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
-                        Snackbar.make(view, "云端数据删除成功", Snackbar.LENGTH_LONG).show();
+//                        Snackbar.make(view, "云端数据删除成功"+, Snackbar.LENGTH_LONG).show();
                     } else {
                         Log.e("BMOB", e.toString());
                         Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
@@ -252,8 +186,8 @@ public class Operation {
                 }
             });
             if (i == image_clouds.size() - 1) {
-                deletFiles(view, image_clouds, emoticonsFragment);
-                emoticonsFragment.deletImage(image_clouds);
+                deletFiles(view, image_clouds, mainPresenter);
+                mainPresenter.deletImage(image_clouds);
             }
         }
 
@@ -265,7 +199,7 @@ public class Operation {
      * @param view
      * @param imageList
      */
-    public static void deletFiles(View view, List<Image_cloud> imageList, EmoticonsFragment emoticonsFragment) {
+    public static void deletFiles(View view, List<Image_cloud> imageList, MainPresenter mainPresenter) {
         String[] urls = new String[imageList.size()];
         for (int i = 0; i < imageList.size(); i++) {
             urls[i] = String.valueOf(imageList.get(i).getUrl());
@@ -275,7 +209,7 @@ public class Operation {
             @Override
             public void done(String[] failUrls, BmobException e) {
                 if (e == null) {
-//                        Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(view, "删除成功!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -284,7 +218,7 @@ public class Operation {
     /**
      * 条件查询
      */
-    public static void equal(View view, String name, EmoticonsFragment emoticonsFragment) {
+    public static void equal(View view, String name, MainPresenter mainPresenter) {
 
         final List<Image_cloud> imagesList = new ArrayList<>();
 
@@ -304,8 +238,8 @@ public class Operation {
                         imagesList.add(image);
                     }
                     Snackbar.make(view, "查询成功：" + personEmoticons.size(), Snackbar.LENGTH_LONG).show();
-                    emoticonsFragment.WriteToGreenDao((ArrayList<Image_cloud>) imagesList);
-                    emoticonsFragment.refresh(imagesList);
+                    mainPresenter.WriteToGreenDao((ArrayList<Image_cloud>) imagesList);
+                    mainPresenter.refresh(imagesList);
                 } else {
                     Log.e("BMOB", e.toString());
                     Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();

@@ -1,4 +1,4 @@
-package com.study.emoticons.qq;
+package com.study.emoticons.utils;
 
 import android.os.AsyncTask;
 import android.os.Build;

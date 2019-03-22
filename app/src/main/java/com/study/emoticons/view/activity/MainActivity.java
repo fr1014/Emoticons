@@ -5,17 +5,13 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import com.study.emoticons.R;
-import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.base.BaseActivity;
-import com.study.emoticons.constans.Constans;
-import com.study.emoticons.qq.ThreadManager;
+import com.study.emoticons.utils.ThreadManager;
 import com.study.emoticons.view.fragment.TextTabFragment;
 import com.tencent.connect.share.QQShare;
 import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
 import cn.bmob.v3.Bmob;
@@ -73,29 +69,33 @@ public class MainActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_view, textTabFragment).commit();
     }
 
+    /**
+     * 分享纯图片到QQ
+     *
+     * @param imagePath
+     */
     public void shareImgToQQ(String imagePath) {
         Bundle shareParams = new Bundle();
         shareParams.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
                 QQShare.SHARE_TO_QQ_TYPE_IMAGE);    //分享的类型。图文分享(普通分享)
-        shareParams.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,imagePath);
+        shareParams.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL, imagePath);
         doShareToQQ(shareParams);
 
     }
 
-    private void doShareToQQ(Bundle params) {
+    public void doShareToQQ(Bundle params) {
 
         //QQ分享需要在主线程中进行
         ThreadManager.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (SplashActivity.mTencent != null){
-                    SplashActivity.mTencent.shareToQQ(MainActivity.this, params, new BaseUiListener());
+                if (SplashActivity.mTencent != null) {
+                    SplashActivity.mTencent.shareToQQ(activity, params, new MainActivity.BaseUiListener());
                 }
             }
         });
 
     }
-
 
     private class BaseUiListener implements IUiListener {
 
@@ -114,5 +114,4 @@ public class MainActivity extends BaseActivity {
 
         }
     }
-
 }

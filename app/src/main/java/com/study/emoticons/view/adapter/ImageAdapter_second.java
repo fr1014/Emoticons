@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.study.emoticons.R;
+import com.study.emoticons.presenter.MainPresenter;
 import com.study.emoticons.utils.GlideUtils;
 import com.study.emoticons.bmob.Operation;
-import com.study.emoticons.view.fragment.EmoticonsFragment;
-import com.study.emoticons.model.Image_cloud;
+import com.study.emoticons.bean.Image_cloud;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +22,17 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
     private Context context;
     private List<Image_cloud> mImages;
     private LayoutInflater mInFlater;
-    private EmoticonsFragment emoticonsFragment;
+    private MainPresenter mainPresenter;
     private List<ImageView> selectViewList = new ArrayList<>();
 
     private boolean isViewImage;
     //保存选中的图片
     private ArrayList<Image_cloud> mSelectImages = new ArrayList<>();
 
-    public ImageAdapter_second(Context context, EmoticonsFragment emoticonsFragment) {
+    public ImageAdapter_second(Context context, MainPresenter mainPresenter) {
         this.context = context;
         mInFlater = LayoutInflater.from(context);
-        this.emoticonsFragment = emoticonsFragment;
+        this.mainPresenter = mainPresenter;
     }
 
     @NonNull
@@ -57,7 +57,7 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
             @Override
             public void onClick(View v) {
 
-                Operation.downloadFile(emoticonsFragment, context, mImages.get(i));
+                Operation.downloadFile(mainPresenter, context, mImages.get(i));
 
             }
         });
@@ -74,9 +74,9 @@ public class ImageAdapter_second extends RecyclerView.Adapter<ImageAdapter_secon
             public boolean onLongClick(View v) {
                 String path = mImages.get(i).getPath();
                 if (path == null) {
-                    emoticonsFragment.photoView(imageUrl);
+                    mainPresenter.photoView(imageUrl);
                 } else {
-                    emoticonsFragment.photoView(path);
+                    mainPresenter.photoView(path);
                 }
                 return true;
             }

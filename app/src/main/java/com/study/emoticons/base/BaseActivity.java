@@ -15,7 +15,7 @@ import com.study.emoticons.greendao.DaoUtils;
 import com.study.emoticons.greendao.dao.DaoSession;
 import com.study.emoticons.listener.ActivityLifeCycleListener;
 import com.study.emoticons.manager.ActivityStackManager;
-import com.study.emoticons.model.Configues;
+import com.study.emoticons.bean.Configues;
 import com.study.emoticons.utils.StatusBarUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 

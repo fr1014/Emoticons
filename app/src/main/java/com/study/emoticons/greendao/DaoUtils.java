@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.greendao.dao.ConfiguesDao;
 import com.study.emoticons.greendao.dao.DaoSession;
-import com.study.emoticons.model.Configues;
+import com.study.emoticons.bean.Configues;
 
 import java.util.List;
 

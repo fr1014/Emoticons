@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.study.emoticons.greendao.DaoUtils;
 import com.study.emoticons.greendao.dao.DaoSession;
 import com.study.emoticons.listener.FragementLifeCycleListener;
-import com.study.emoticons.model.Configues;
+import com.study.emoticons.bean.Configues;
 import com.study.emoticons.utils.ListUtil;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 

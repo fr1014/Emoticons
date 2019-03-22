@@ -146,9 +146,9 @@ public class MineFragment extends BaseFragment {
      */
     private void loadUserInfo(String user_head_img) {
 
-        String img_url = user_head_img.replace("http", "https");
+//        String img_url = user_head_img.replace("http", "https");
 
-        GlideUtils.load(context, img_url, iv_Head, new RequestOptions().circleCrop());
+        GlideUtils.load(context, user_head_img, iv_Head, new RequestOptions().placeholder(R.drawable.ic_launcher).circleCrop());
     }
 
 }

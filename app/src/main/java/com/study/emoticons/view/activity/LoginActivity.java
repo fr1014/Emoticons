@@ -9,7 +9,7 @@ import android.view.View;
 import com.study.emoticons.R;
 import com.study.emoticons.app.MyApplication;
 import com.study.emoticons.base.BaseActivity;
-import com.study.emoticons.model.Configues;
+import com.study.emoticons.bean.Configues;
 import com.study.emoticons.utils.ListUtil;
 import com.study.emoticons.utils.ToastUtils;
 import com.tencent.connect.UserInfo;
